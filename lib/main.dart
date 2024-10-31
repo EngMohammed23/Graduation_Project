@@ -63,7 +63,7 @@ class HomePage extends StatelessWidget {
       extendBody: true,
       body: Center(
         child: Text(
-            'jsj هذا تطبيق يدعم اللغة العربية.'), // "هذا تطبيق يدعم اللغة العربية."
+            'moh هذا تطبيق يدعم اللغة العربية.'), // "هذا تطبيق يدعم اللغة العربية."
       ),
     );
   }
