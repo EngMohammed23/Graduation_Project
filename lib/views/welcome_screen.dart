@@ -1,4 +1,5 @@
 import 'package:damage_assessment_project/controller/welcome_controller.dart';
+import 'package:damage_assessment_project/views/login_screen.dart';
 import 'package:damage_assessment_project/views/pageview1.dart';
 import 'package:damage_assessment_project/views/pageview2.dart';
 import 'package:damage_assessment_project/views/pageview3.dart';
@@ -13,6 +14,15 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(0, 40, 10, 0),
+            alignment: Alignment.centerRight,
+            child: TextButton(
+                onPressed: () {
+                  Get.to(LoginScreen());
+                },
+                child: Text("Skip")),
+          ),
           Expanded(
             child: PageView(
               controller: controller.pageController,
@@ -41,7 +51,7 @@ class WelcomeScreen extends StatelessWidget {
                 }),
               )),
           Padding(
-            padding: const EdgeInsets.all(120.0),
+            padding: const EdgeInsets.all(100.0),
           ),
         ],
       ),
