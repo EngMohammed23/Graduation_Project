@@ -1,6 +1,6 @@
-import 'package:damage_assessment_project/views/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:takatuf/views/splash.dart';
 
 void main() {
   runApp(const MainApp());

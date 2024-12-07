@@ -1,10 +1,10 @@
-import 'package:damage_assessment_project/controller/welcome_controller.dart';
-import 'package:damage_assessment_project/views/login_screen.dart';
-import 'package:damage_assessment_project/views/pageview1.dart';
-import 'package:damage_assessment_project/views/pageview2.dart';
-import 'package:damage_assessment_project/views/pageview3.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:takatuf/controller/welcome_controller.dart';
+import 'package:takatuf/views/login_screen.dart';
+import 'package:takatuf/views/pageview1.dart';
+import 'package:takatuf/views/pageview2.dart';
+import 'package:takatuf/views/pageview3.dart';
 
 class WelcomeScreen extends StatelessWidget {
   final WelcomeController controller = Get.put(WelcomeController());
@@ -22,7 +22,10 @@ class WelcomeScreen extends StatelessWidget {
               onPressed: () {
                 Get.to(LoginScreen());
               },
-              child: Text("Skip"),
+              child: Text(
+                "Skip",
+                style: TextStyle(color: Color(0xFF003366)),
+              ),
             ),
           ),
 
@@ -61,47 +64,83 @@ class WelcomeScreen extends StatelessWidget {
           Obx(() {
             if (controller.currentPage.value == 0) {
               // Button for PageView1
-              return Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.arrow_forward_rounded),
-                ),
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 30.0),
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: Color(0xFF003366), shape: BoxShape.circle),
+                      child: IconButton(
+                        onPressed: () {
+                          Get.to(Pageview2);
+                        },
+                        icon: Icon(
+                          Icons.arrow_forward_rounded,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               );
             } else if (controller.currentPage.value == 1) {
               // Two buttons in a row for PageView2
               return Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        // Add functionality for Button 1
-                        print("Button 1 clicked on PageView2!");
-                      },
-                      child: Text("Button 1"),
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: Color(0xFFBCE0FD), shape: BoxShape.circle),
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Add functionality for Button 2
-                        print("Button 2 clicked on PageView2!");
-                      },
-                      child: Text("Button 2"),
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: Color(0xFF003366), shape: BoxShape.circle),
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.arrow_forward_rounded,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               );
             } else if (controller.currentPage.value == 2) {
               // Single button for PageView3
-              return Padding(
+              return Container(
                 padding: const EdgeInsets.only(top: 16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Add functionality for the button
-                    print("Button clicked on PageView3!");
-                  },
-                  child: Text("Pageview3 Button"),
+                margin: EdgeInsets.symmetric(horizontal: 30.0),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Color(0xFF003366),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Get started",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
               );
             }
@@ -110,7 +149,7 @@ class WelcomeScreen extends StatelessWidget {
 
           // Bottom padding to prevent content overflow
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(70.0),
           ),
         ],
       ),

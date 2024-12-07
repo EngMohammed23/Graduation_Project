@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:damage_assessment_project/views/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:takatuf/views/welcome_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -64,8 +64,8 @@ class _SplashScreenState extends State<SplashScreen>
                   children: [
                     Image.asset(
                       'assets/images/logo.png', // Replace with your logo asset path
-                      // width: 150,
-                      // height: 150,
+                      width: 300,
+                      height: 300,
                     ),
                     SizedBox(height: 20),
                     Text(

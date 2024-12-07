@@ -1,6 +1,6 @@
-import 'package:damage_assessment_project/views/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:takatuf/views/login_screen.dart';
 
 class WelcomeController extends GetxController {
   var currentPage = 0.obs;
