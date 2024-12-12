@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:takatuf/views/login_screen.dart';
+import 'package:takatuf/views/Signin_screen.dart';
 
 class WelcomeController extends GetxController {
   var currentPage = 0.obs;
@@ -12,6 +12,6 @@ class WelcomeController extends GetxController {
 
   void navigateToLogin() {
     // Navigate to the login or registration screen
-    Get.to(() => LoginScreen());
+    Get.to(() => SigninScreen());
   }
 }

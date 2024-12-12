@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-
-
 class Pageview2 extends StatelessWidget {
+  const Pageview2({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
