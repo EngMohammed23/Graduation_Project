@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:takatuf/views/signup_screen.dart';
@@ -13,7 +14,7 @@ class SigninScreen extends StatelessWidget {
         title: Text(
           'Sign In',
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 18,
             fontFamily: 'Poppins',
             color: Colors.white, // لون النص الأبيض
           ),
@@ -33,7 +34,7 @@ class SigninScreen extends StatelessWidget {
               Text(
                 'Sign in to your account',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 17,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
                 ),
@@ -50,7 +51,7 @@ class SigninScreen extends StatelessWidget {
                   hintText: "Enter your email",
                   hintStyle: TextStyle(
                     color: Colors.grey.withOpacity(0.6),
-                    fontSize: 17,
+                    fontSize: 13,
                     fontFamily: 'Poppins',
                   ),
                   labelText: 'Email',
@@ -77,7 +78,7 @@ class SigninScreen extends StatelessWidget {
                   hintText: "Enter your password",
                   hintStyle: TextStyle(
                     color: Colors.grey.withOpacity(0.6),
-                    fontSize: 17,
+                    fontSize: 13,
                     fontFamily: 'Poppins',
                   ),
                   labelText: 'Password',
@@ -138,7 +139,7 @@ class SigninScreen extends StatelessWidget {
                 child: Text(
                   'Sign In',
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 14,
                     fontFamily: 'Poppins',
                     color: Colors.white,
                   ),
@@ -188,7 +189,7 @@ class SigninScreen extends StatelessWidget {
                 child: Text(
                   'Sign in with Google',
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 14,
                     fontFamily: 'Poppins',
                     color: Colors.white,
                   ),
@@ -209,7 +210,7 @@ class SigninScreen extends StatelessWidget {
                 child: Text(
                   'Sign in with Apple',
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 14,
                     fontFamily: 'Poppins',
                     color: Colors.white,
                   ),
@@ -218,21 +219,29 @@ class SigninScreen extends StatelessWidget {
               SizedBox(height: 20),
               Align(
                 alignment: Alignment.center,
-                child: TextButton(
-                  onPressed: () {
-                    Get.to(() => SignupScreen());
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor:
-                        Color(0xFF003366).withOpacity(0.4), // شفافية 40%
-                  ),
-                  child: Text(
-                    "Don't have an account? Sign Up",
+                child: Text.rich(
+                  TextSpan(
+                    text: 'Don\'t have an account? ',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 12, // النصوص الأخرى
                       fontFamily: 'Poppins',
-                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
+                    children: [
+                      TextSpan(
+                        text: 'Sign Up',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'Poppins',
+                          color: Color(0xFF003366), // اللون المطلوب
+                          decoration: TextDecoration.underline, // خط تحت الكلمة
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Get.to(() => SignupScreen());
+                          },
+                      ),
+                    ],
                   ),
                 ),
               ),
