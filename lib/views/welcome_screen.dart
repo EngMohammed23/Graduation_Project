@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:takatuf/controller/welcome_controller.dart';
-import 'package:takatuf/views/login_screen.dart';
+import 'package:takatuf/views/Signin_screen.dart';
 import 'package:takatuf/views/pageview1.dart';
 import 'package:takatuf/views/pageview2.dart';
 import 'package:takatuf/views/pageview3.dart';
+import 'package:takatuf/views/signup_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   final WelcomeController controller = Get.put(WelcomeController());
+
+  WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,7 @@ class WelcomeScreen extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: TextButton(
               onPressed: () {
-                Get.to(LoginScreen());
+                Get.to(SignupScreen());
               },
               child: Text(
                 "Skip",

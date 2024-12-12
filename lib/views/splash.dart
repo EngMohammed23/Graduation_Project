@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:takatuf/views/welcome_screen.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
