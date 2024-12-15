@@ -2,12 +2,15 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:takatuf/views/Signin_screen.dart';
+import 'package:takatuf/views/VerifyMobileScreen.dart';
 
 class SignupScreen extends StatelessWidget {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+  SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -161,8 +164,9 @@ class SignupScreen extends StatelessWidget {
                 onPressed: () {
                   if (passwordController.text ==
                       confirmPasswordController.text) {
-                    Get.snackbar('Success', 'Account created successfully!',
-                        snackPosition: SnackPosition.BOTTOM);
+                    //Get.snackbar('Success', 'Account created successfully!',
+                    Get.to(() => VerifyMobileScreen());
+                    //snackPosition: SnackPosition.BOTTOM);
                   } else {
                     Get.snackbar('Error', 'Passwords do not match!',
                         snackPosition: SnackPosition.BOTTOM,

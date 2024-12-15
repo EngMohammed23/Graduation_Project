@@ -7,6 +7,8 @@ class SigninScreen extends StatelessWidget {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  SigninScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
