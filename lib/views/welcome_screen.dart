@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:takatuf/controller/welcome_controller.dart';
-import 'package:takatuf/views/Signin_screen.dart';
 import 'package:takatuf/views/pageview1.dart';
 import 'package:takatuf/views/pageview2.dart';
 import 'package:takatuf/views/pageview3.dart';
