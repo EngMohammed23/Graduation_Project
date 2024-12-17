@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // ),
     Text('Home'),
     Text('Search'),
-    Text('AddScreen'),
+    Text('Create New Project'),
     Text('FavoritesScreen'),
     Text('ProfileScreen'),
   ];
