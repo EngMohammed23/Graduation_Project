@@ -1,4 +1,4 @@
-name: takatuf
+name: "takatuf"
 description: "A new Flutter project."
 publish_to: 'none'
 version: 0.1.0
@@ -19,6 +19,7 @@ dependencies:
   file_picker: ^8.1.5
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
@@ -28,4 +29,7 @@ flutter:
   assets:
     - assets/images/
 
-
+flutter_icons: # يجب أن يكون خارج flutter
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"

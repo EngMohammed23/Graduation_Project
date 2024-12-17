@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:takatuf/views/profile_screen.dart';
-import '../widget/home_card_widget.dart';
-import '../widget/list_tile_drawer.dart';
 import 'Home.dart';
 import 'add_screen.dart';
 import 'favorites_screen.dart';
@@ -15,14 +13,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  final List<Widget>_list =[
+  final List<Widget> _list = [
     Home(),
     SearchScreen(),
     AddScreen(),
     FavoritesScreen(),
     ProfileScreen()
   ];
-  final List<Widget>_list2 =[
+  final List<Widget> _list2 = [
     // Container(
     //   height: 37,
     //   width: 281,
@@ -50,51 +48,66 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Drawer(
-          child: Column(
-
-          )
-        ),
+        drawer: Drawer(child: Column()),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           // leading: ,
           title: _list2.elementAt(_currentIndex),
-          centerTitle:true ,
+          centerTitle: true,
           actions: [
             Row(
               children: [
-                IconButton(onPressed: () {
-
-                },icon: Icon(Icons.settings),),
-                IconButton(onPressed: () {
-
-                },icon: Icon(Icons.favorite),)
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.settings),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.favorite),
+                )
               ],
             )
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
-          onTap: (value){
-            setState((){
-              _currentIndex =value;
+          onTap: (value) {
+            setState(() {
+              _currentIndex = value;
             });
           },
           backgroundColor: const Color(0XFF003366),
           unselectedItemColor: const Color(0XFF63666E),
-          fixedColor:  Colors.white,
+          fixedColor: Colors.white,
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home,), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.search,), label: 'Search'),
-            BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline,), label: 'Add'),
-            BottomNavigationBarItem(icon: Icon(Icons.favorite_border,), label: 'Favorite'),
-            BottomNavigationBarItem(icon: Icon(Icons.person,), label: 'Person'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                ),
+                label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.search,
+                ),
+                label: 'Search'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.add_circle_outline,
+                ),
+                label: 'Add'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.favorite_border,
+                ),
+                label: 'Favorite'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.person,
+                ),
+                label: 'Person'),
           ],
         ),
-        body:
-        _list.elementAt(_currentIndex)
-
-    );
+        body: _list.elementAt(_currentIndex));
   }
 }
