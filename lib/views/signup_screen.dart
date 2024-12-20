@@ -4,13 +4,19 @@ import 'package:get/get.dart';
 import 'package:takatuf/views/Signin_screen.dart';
 import 'package:takatuf/views/VerifyMobileScreen.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
+  SignupScreen({super.key});
+
+  @override
+  _SignupScreenState createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-
-  SignupScreen({super.key});
+  bool isPasswordHidden = true; // للتحكم في عرض/إخفاء كلمة المرور
 
   @override
   Widget build(BuildContext context) {
@@ -21,19 +27,25 @@ class SignupScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontFamily: 'Poppins',
-            color: Colors.white,
+            color: Colors.black, // لون النص أسود
           ),
         ),
-        backgroundColor: Color(0xFF003366),
+        backgroundColor: Colors.white, // خلفية AppBar بيضاء
         iconTheme: IconThemeData(
-          color: Colors.white,
+          color: Color(0xFF003366), // لون السهم
         ),
+        elevation: 0, // إزالة الظل أسفل الـ AppBar
       ),
+      backgroundColor: Colors.white, // خلفية الشاشة بالكامل بيضاء
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.only(
+          top: MediaQuery.of(context).size.height *
+              0.05, // إضافة Margin من الأعلى
+          left: 16.0,
+          right: 16.0,
+        ),
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -43,7 +55,6 @@ class SignupScreen extends StatelessWidget {
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
                 ),
-                textAlign: TextAlign.start,
               ),
               SizedBox(height: 20),
               TextField(
@@ -101,6 +112,7 @@ class SignupScreen extends StatelessWidget {
               SizedBox(height: 20),
               TextField(
                 controller: passwordController,
+                obscureText: isPasswordHidden, // التحكم في عرض/إخفاء النص
                 style: TextStyle(
                   fontSize: 17,
                   fontFamily: 'Poppins',
@@ -122,12 +134,25 @@ class SignupScreen extends StatelessWidget {
                       Radius.circular(15.0),
                     ),
                   ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      isPasswordHidden
+                          ? Icons.visibility_off // أيقونة الإخفاء
+                          : Icons.visibility, // أيقونة العرض
+                      color: Colors.grey.withOpacity(0.6), // شفافية 60%
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isPasswordHidden = !isPasswordHidden; // تبديل الحالة
+                      });
+                    },
+                  ),
                 ),
-                obscureText: true,
               ),
               SizedBox(height: 20),
               TextField(
                 controller: confirmPasswordController,
+                obscureText: isPasswordHidden, // التحكم في عرض/إخفاء النص
                 style: TextStyle(
                   fontSize: 17,
                   fontFamily: 'Poppins',
@@ -149,8 +174,20 @@ class SignupScreen extends StatelessWidget {
                       Radius.circular(15.0),
                     ),
                   ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      isPasswordHidden
+                          ? Icons.visibility_off // أيقونة الإخفاء
+                          : Icons.visibility, // أيقونة العرض
+                      color: Colors.grey.withOpacity(0.6), // شفافية 60%
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isPasswordHidden = !isPasswordHidden; // تبديل الحالة
+                      });
+                    },
+                  ),
                 ),
-                obscureText: true,
               ),
               SizedBox(height: 30),
               ElevatedButton(
@@ -161,17 +198,39 @@ class SignupScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                 ),
-                onPressed: () {
-                  if (passwordController.text ==
+                onPressed: () async {
+                  if (nameController.text.isEmpty ||
+                      emailController.text.isEmpty ||
+                      passwordController.text.isEmpty ||
+                      confirmPasswordController.text.isEmpty) {
+                    Get.snackbar('Error', 'Please fill in all fields!',
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white);
+                  } else if (passwordController.text !=
                       confirmPasswordController.text) {
-                    //Get.snackbar('Success', 'Account created successfully!',
-                    Get.to(() => VerifyMobileScreen());
-                    //snackPosition: SnackPosition.BOTTOM);
-                  } else {
                     Get.snackbar('Error', 'Passwords do not match!',
                         snackPosition: SnackPosition.BOTTOM,
                         backgroundColor: Colors.red,
                         colorText: Colors.white);
+                  } else {
+                    // عرض Spinner عند بدء العملية
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: Color(0xFF003366),
+                          ),
+                        );
+                      },
+                    );
+
+                    await Future.delayed(
+                        Duration(seconds: 2)); // محاكاة التأخير
+                    Navigator.of(context).pop(); // إغلاق الـ Spinner
+                    Get.to(() => VerifyMobileScreen());
                   }
                 },
                 child: Text(
@@ -190,7 +249,7 @@ class SignupScreen extends StatelessWidget {
                   TextSpan(
                     text: 'Already have an account ',
                     style: TextStyle(
-                      fontSize: 12, // النصوص الأخرى
+                      fontSize: 12,
                       fontFamily: 'Poppins',
                       color: Colors.black,
                     ),
@@ -200,8 +259,8 @@ class SignupScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 12,
                           fontFamily: 'Poppins',
-                          color: Color(0xFF003366), // اللون المطلوب
-                          decoration: TextDecoration.underline, // خط تحت الكلمة
+                          color: Color(0xFF003366),
+                          decoration: TextDecoration.underline,
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {

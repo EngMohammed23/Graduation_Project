@@ -17,56 +17,108 @@ class VerifyMobileScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontFamily: 'Poppins',
-            color: Colors.white,
+            color: Colors.black, // لون النص أسود
           ),
         ),
-        backgroundColor: Color(0xFF003366),
-        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.white, // خلفية AppBar بيضاء
+        iconTheme: IconThemeData(
+          color: Color(0xFF003366), // لون السهم
+        ),
+        elevation: 0, // إزالة الظل
       ),
+      backgroundColor: Colors.white, // خلفية الشاشة بالكامل بيضاء
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Verify your mobile',
-              style: TextStyle(
-                fontSize: 17,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'We will send a text to verify your number. No fees will apply.',
-              style: TextStyle(
-                fontSize: 13,
-                fontFamily: 'Poppins',
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: phoneController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                hintText: 'Enter your number',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+        padding: EdgeInsets.only(
+          top: MediaQuery.of(context).size.height * 0.05, // Margin علوي
+          left: 16.0,
+          right: 16.0,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Verify your mobile',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            SizedBox(height: 30),
-            Center(
-              child: ElevatedButton(
+              SizedBox(height: 10),
+              Text(
+                'We will send a text to verify your number. No fees will apply.',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontFamily: 'Poppins',
+                  color: Colors.grey,
+                ),
+              ),
+              SizedBox(height: 20),
+              TextField(
+                controller: phoneController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: 'Enter your number',
+                  hintStyle: TextStyle(
+                    color: Colors.grey.withOpacity(0.6),
+                    fontSize: 13,
+                    fontFamily: 'Poppins',
+                  ),
+                  labelText: 'Mobile Number',
+                  labelStyle: TextStyle(
+                    fontSize: 12,
+                    fontFamily: 'Poppins',
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 30),
+              ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF003366),
                   minimumSize: Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
                 ),
-                onPressed: () {
-                  if (phoneController.text.isNotEmpty) {
-                    // عرض شاشة النجاح
+                onPressed: () async {
+                  if (phoneController.text.isEmpty) {
+                    Get.snackbar(
+                      'Error',
+                      'Please enter your mobile number!',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                  } else if (!RegExp(r'^[0-9]+$')
+                      .hasMatch(phoneController.text)) {
+                    Get.snackbar(
+                      'Error',
+                      'Please enter a valid mobile number!',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                  } else {
+                    // Spinner أثناء معالجة الطلب
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: Color(0xFF003366),
+                          ),
+                        );
+                      },
+                    );
+
+                    await Future.delayed(
+                        Duration(seconds: 2)); // محاكاة التأخير
+                    Navigator.of(context).pop(); // إغلاق Spinner
                     showGeneralDialog(
                       context: context,
                       barrierDismissible: false,
@@ -81,13 +133,6 @@ class VerifyMobileScreen extends StatelessWidget {
                         );
                       },
                     );
-                  } else {
-                    Get.snackbar(
-                      'Error',
-                      'Please enter your mobile number!',
-                      backgroundColor: Colors.red,
-                      colorText: Colors.white,
-                    );
                   }
                 },
                 child: Text(
@@ -99,8 +144,8 @@ class VerifyMobileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

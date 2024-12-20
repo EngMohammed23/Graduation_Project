@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
+  const UpdateProfileScreen({super.key});
+
   @override
   _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
 }
@@ -73,7 +75,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               SizedBox(height: 20),
               _buildTextField("Email", emailController),
               SizedBox(height: 20),
-              _buildTextField("Phone", phoneController, prefixIcon: _buildFlagIcon()),
+              _buildTextField("Phone", phoneController,
+                  prefixIcon: _buildFlagIcon()),
               SizedBox(height: 20),
               Row(
                 children: [
@@ -115,7 +118,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: Text("Save",style: GoogleFonts.poppins(fontSize: 17,color: Colors.white),),
+                child: Text(
+                  "Save",
+                  style: GoogleFonts.poppins(fontSize: 17, color: Colors.white),
+                ),
               ),
             ],
           ),
@@ -124,7 +130,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller, {Widget? prefixIcon}) {
+  Widget _buildTextField(String label, TextEditingController controller,
+      {Widget? prefixIcon}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
