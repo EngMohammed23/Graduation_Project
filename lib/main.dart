@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:takatuf/views/signin_screen.dart';
+import 'package:takatuf/views/create_a_new_password.dart';
+import 'package:takatuf/views/forgot_password_screen.dart';
 import 'package:takatuf/views/verification_code_screen.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: VerificationCodeScreen(),
+      home: CreateNewPasswordScreen(),
     );
   }
 }
