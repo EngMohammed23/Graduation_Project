@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SuccessScreen extends StatelessWidget {
   final VoidCallback onSuccess;
 
-  SuccessScreen({required this.onSuccess});
+  const SuccessScreen({super.key, required this.onSuccess});
 
   @override
   Widget build(BuildContext context) {

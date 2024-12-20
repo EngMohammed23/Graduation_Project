@@ -43,6 +43,8 @@ class Home extends StatelessWidget {
     'Dilon Bruce',
   ];
 
+  Home({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

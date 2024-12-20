@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:takatuf/views/home_screen.dart';
 import 'package:takatuf/views/signup_screen.dart';
 
 class SigninScreen extends StatelessWidget {
@@ -129,8 +130,7 @@ class SigninScreen extends StatelessWidget {
                 onPressed: () {
                   if (emailController.text.isNotEmpty &&
                       passwordController.text.isNotEmpty) {
-                    Get.snackbar('Success', 'Logged in successfully!',
-                        snackPosition: SnackPosition.BOTTOM);
+                    Get.to(() => HomeScreen());
                   } else {
                     Get.snackbar('Error', 'Please fill in all fields!',
                         snackPosition: SnackPosition.BOTTOM,
