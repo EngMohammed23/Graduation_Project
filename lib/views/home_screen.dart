@@ -48,28 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Drawer(child: Column()),
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          // leading: ,
-          title: _list2.elementAt(_currentIndex),
-          centerTitle: true,
-          actions: [
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.settings),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.favorite),
-                )
-              ],
-            )
-          ],
-        ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (value) {
@@ -77,37 +55,49 @@ class _HomeScreenState extends State<HomeScreen> {
               _currentIndex = value;
             });
           },
-          backgroundColor: const Color(0XFF003366),
-          unselectedItemColor: const Color(0XFF63666E),
-          fixedColor: Colors.white,
+          backgroundColor: const Color(0xFF003366), // لون الخلفية
+          unselectedItemColor: Colors.white, // لون العناصر غير المختارة
+          type: BottomNavigationBarType.fixed, // تثبيت العناصر
+          showSelectedLabels: false, // إخفاء النص النشط
+          showUnselectedLabels: false, // إخفاء النصوص غير النشطة
           items: [
             BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                ),
-                label: 'Home'),
+              icon: _buildCustomIcon(Icons.home, 0),
+              label: 'Home',
+            ),
             BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.search,
-                ),
-                label: 'Search'),
+              icon: _buildCustomIcon(Icons.search, 1),
+              label: 'Search',
+            ),
             BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.add_circle_outline,
-                ),
-                label: 'Add'),
+              icon: _buildCustomIcon(Icons.add_circle_outline, 2),
+              label: 'Add',
+            ),
             BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.favorite_border,
-                ),
-                label: 'Favorite'),
+              icon: _buildCustomIcon(Icons.favorite_border, 3),
+              label: 'Favorite',
+            ),
             BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.person,
-                ),
-                label: 'Person'),
+              icon: _buildCustomIcon(Icons.person, 4),
+              label: 'Person',
+            ),
           ],
         ),
         body: _list.elementAt(_currentIndex));
   }
+  Widget _buildCustomIcon(IconData icon, int index) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: _currentIndex == index ? Colors.white : Colors.transparent,
+      ),
+      padding: const EdgeInsets.all(8), // حجم الدائرة حول الأيقونة
+      child: Icon(
+        icon,
+        color: _currentIndex == index ? const Color(0xFF729F3A) : Colors.white,
+        size: 28, // حجم الأيقونة
+      ),
+    );
+  }
+
 }

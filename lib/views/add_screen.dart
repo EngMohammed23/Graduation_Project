@@ -65,6 +65,9 @@ class _AddScreenState extends State<AddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Center(child: Text('Create New Project',style: GoogleFonts.poppins(fontSize: 20,color: Colors.black),)),
+      ),
       body: Padding(
         padding: EdgeInsets.all(30.0),
         child: Form(

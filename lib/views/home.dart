@@ -46,6 +46,55 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0xFF6C89A4),
+              ),
+              child: Center(
+                child: Text(
+                  'Menu',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.search),
+              title: Text('Search'),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        actions: [
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.settings),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.favorite),
+              )
+            ],
+          )
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: ListView(
