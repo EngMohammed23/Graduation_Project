@@ -5,7 +5,7 @@ import 'package:takatuf/views/signin_screen.dart';
 import 'package:takatuf/views/verify_mobile_screen.dart';
 
 class SignupScreen extends StatefulWidget {
-  SignupScreen({super.key});
+  const SignupScreen({super.key});
 
   @override
   _SignupScreenState createState() => _SignupScreenState();
