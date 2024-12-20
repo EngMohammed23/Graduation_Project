@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:takatuf/views/Signin_screen.dart';
 
-import 'views/home_screen.dart';
-
 void main() {
   runApp(const MainApp());
 }
