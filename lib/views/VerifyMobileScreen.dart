@@ -6,6 +6,8 @@ import 'signin_screen.dart'; // واجهة تسجيل الدخول
 class VerifyMobileScreen extends StatelessWidget {
   final phoneController = TextEditingController();
 
+  VerifyMobileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
