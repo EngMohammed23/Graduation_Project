@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:takatuf/views/Signin_screen.dart';
-
-import 'views/home_screen.dart';
+import 'package:takatuf/views/signin_screen.dart';
+import 'package:takatuf/views/verification_code_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -15,7 +14,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SigninScreen(),
+      home: VerificationCodeScreen(),
     );
   }
 }
