@@ -20,31 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
     FavoritesScreen(),
     ProfileScreen()
   ];
-  final List<Widget> _list2 = [
-    // Container(
-    //   height: 37,
-    //   width: 281,
-    //   child: TextField(
-    //       style: TextStyle(color: Colors.white),
-    //       decoration: InputDecoration(
-    //         hintText: 'Search album song ',
-    //         hintStyle: TextStyle(
-    //           color: Color(0XFF707070),
-    //           fontSize: 13,
-    //           fontWeight: FontWeight.normal,
-    //         ),
-    //         prefixIcon: Icon(Icons.search,color: Color(0XFF707070)),
-    //         border: OutlineInputBorder(
-    //             borderRadius: BorderRadius.circular(25),
-    //             borderSide: BorderSide(color: Colors.grey.shade700)),
-    //       )),
-    // ),
-    Text('Home'),
-    Text('Search'),
-    Text('Create New Project'),
-    Text('FavoritesScreen'),
-    Text('ProfileScreen'),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
