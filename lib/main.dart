@@ -7,6 +7,7 @@ import 'package:takatuf/views/favorites_screen.dart';
 import 'package:takatuf/views/home.dart';
 import 'package:takatuf/views/profile_screen.dart';
 import 'package:takatuf/views/project_details_screen.dart';
+import 'package:takatuf/views/project_management_screen.dart';
 import 'package:takatuf/views/search_screen.dart';
 import 'package:takatuf/views/setting_screen.dart';
 import 'package:takatuf/views/signup_screen.dart';
@@ -27,12 +28,13 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/project_details_screen',
+      initialRoute: '/project_management_screen',
       // home: HomeScreen(),
       routes: {
         '/splash_screen':(context) => SplashScreen(),
         '/home_screen':(context) => HomeScreen(),
         '/home':(context) => Home(),
+        '/project_management_screen':(context) => ProjectManagementScreen(),
         '/create_new_project_screen':(context) => CreateNewProjectScreen(),
         '/setting_screen':(context) => SettingScreen(),
         '/favorites_screen':(context) => FavoritesScreen(),
