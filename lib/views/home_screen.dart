@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:takatuf/views/profile_screen.dart';
 import 'Home.dart';
-import 'add_screen.dart';
+import 'create_new_project_screen.dart';
 import 'favorites_screen.dart';
 import 'search_screen.dart';
 
@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _list = [
     Home(),
     SearchScreen(),
-    AddScreen(),
+    CreateNewProjectScreen(),
     FavoritesScreen(),
     ProfileScreen()
   ];
