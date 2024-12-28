@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:takatuf/views/Signin_screen.dart';
 import 'package:takatuf/views/VerifyMobileScreen.dart';
+import 'package:takatuf/views/contractor_ratings_screen.dart';
 import 'package:takatuf/views/create_new_project_screen.dart';
 import 'package:takatuf/views/favorites_screen.dart';
 import 'package:takatuf/views/home.dart';
+import 'package:takatuf/views/notifications_screen.dart';
 import 'package:takatuf/views/profile_screen.dart';
 import 'package:takatuf/views/project_details_screen.dart';
 import 'package:takatuf/views/project_management_screen.dart';
@@ -28,7 +30,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/project_management_screen',
+      initialRoute: '/contractor_ratings_screen',
       // home: HomeScreen(),
       routes: {
         '/splash_screen':(context) => SplashScreen(),
@@ -47,6 +49,8 @@ class MainApp extends StatelessWidget {
         '/update_profile_screen':(context) => UpdateProfileScreen(),
         '/verify_mobile_screen':(context) => VerifyMobileScreen(),
         '/welcome_screen':(context) => WelcomeScreen(),
+        '/notifications_screen':(context) => Notifications_Screen(),
+        '/contractor_ratings_screen':(context) => ContractorRatingsScreen(),
       },
     );
   }
