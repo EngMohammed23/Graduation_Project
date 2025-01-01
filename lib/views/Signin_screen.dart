@@ -1,31 +1,43 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:takatuf/views/home_screen.dart';
 import 'package:takatuf/views/signup_screen.dart';
 
-class SigninScreen extends StatelessWidget {
+class SigninScreen extends StatefulWidget {
+  const SigninScreen({super.key});
+
+  @override
+  _SigninScreenState createState() => _SigninScreenState();
+}
+
+class _SigninScreenState extends State<SigninScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-  SigninScreen({super.key});
+  bool isPasswordHidden = true; // للتحكم في عرض/إخفاء كلمة المرور
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Color(0xFF003366)), // زر الرجوع
+          onPressed: () {
+            Navigator.of(context).pop(); // العودة للشاشة السابقة
+          },
+        ),
         title: Text(
           'Sign In',
           style: TextStyle(
             fontSize: 18,
             fontFamily: 'Poppins',
-            color: Colors.white, // لون النص الأبيض
+            color: Colors.black, // لون النص أسود
           ),
         ),
-        backgroundColor: Color(0xFF003366), // خلفية AppBar
-        iconTheme: IconThemeData(
-          color: Colors.white, // لون السهم (أيقونة الرجوع)
-        ),
+        backgroundColor: Colors.white, // خلفية AppBar بيضاء
+        elevation: 0, // إزالة الظل
       ),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -72,6 +84,7 @@ class SigninScreen extends StatelessWidget {
               SizedBox(height: 20),
               TextField(
                 controller: passwordController,
+                obscureText: isPasswordHidden, // التحكم في عرض/إخفاء النص
                 style: TextStyle(
                   fontSize: 17,
                   fontFamily: 'Poppins',
@@ -93,8 +106,20 @@ class SigninScreen extends StatelessWidget {
                       Radius.circular(15.0),
                     ),
                   ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      isPasswordHidden
+                          ? Icons.visibility_off // أيقونة الإخفاء
+                          : Icons.visibility, // أيقونة العرض
+                      color: Colors.grey.withOpacity(0.6), // شفافية 60%
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isPasswordHidden = !isPasswordHidden; // تبديل الحالة
+                      });
+                    },
+                  ),
                 ),
-                obscureText: true,
               ),
               SizedBox(height: 10),
               Align(
@@ -129,8 +154,7 @@ class SigninScreen extends StatelessWidget {
                 onPressed: () {
                   if (emailController.text.isNotEmpty &&
                       passwordController.text.isNotEmpty) {
-                    Get.snackbar('Success', 'Logged in successfully!',
-                        snackPosition: SnackPosition.BOTTOM);
+                    Get.to(() => HomeScreen());
                   } else {
                     Get.snackbar('Error', 'Please fill in all fields!',
                         snackPosition: SnackPosition.BOTTOM,
