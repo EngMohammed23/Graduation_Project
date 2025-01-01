@@ -5,14 +5,14 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart'; // لمعرفة بيئة التشغيل
 
-class AddScreen extends StatefulWidget {
-  const AddScreen({super.key});
+class CreateNewProjectScreen extends StatefulWidget {
+  const CreateNewProjectScreen({super.key});
 
   @override
-  _AddScreenState createState() => _AddScreenState();
+  _CreateNewProjectScreenState createState() => _CreateNewProjectScreenState();
 }
 
-class _AddScreenState extends State<AddScreen> {
+class _CreateNewProjectScreenState extends State<CreateNewProjectScreen> {
   final _formKey = GlobalKey<FormState>();
   String titleProject = '';
   String _projectDescription = '';
@@ -215,6 +215,7 @@ class _AddScreenState extends State<AddScreen> {
                   minWidth: double.infinity,
                   color: Color(0XFF003366),
                   textColor: Colors.white,
+                  child: Text('Publish now'),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
@@ -241,7 +242,6 @@ class _AddScreenState extends State<AddScreen> {
                       );
                     }
                   },
-                  child: Text('Publish now'),
                 ),
               ],
             ),

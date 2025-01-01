@@ -86,11 +86,15 @@ class Home extends StatelessWidget {
           Row(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/setting_screen');
+                },
                 icon: Icon(Icons.settings),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/favorites_screen');
+                },
                 icon: Icon(Icons.favorite),
               )
             ],
