@@ -18,6 +18,7 @@ import 'package:takatuf/views/success_screen.dart';
 import 'package:takatuf/views/update_profile_screen.dart';
 import 'package:takatuf/views/welcome_screen.dart';
 import 'views/home_screen.dart';
+import 'views/verify_mobile_screen.dart';
 
 void main() {
   runApp(const MainApp());
