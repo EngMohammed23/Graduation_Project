@@ -80,7 +80,7 @@ class _Notifications_ScreenState extends State<Notifications_Screen> {
                 child: Text('Change'),
                 onPressed: () {
 
-                }),
+                },)
 
 
           ],

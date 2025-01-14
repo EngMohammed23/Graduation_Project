@@ -5,8 +5,10 @@ import 'package:takatuf/views/VerifyMobileScreen.dart';
 import 'package:takatuf/views/contractor_ratings_screen.dart';
 import 'package:takatuf/views/create_new_project_screen.dart';
 import 'package:takatuf/views/favorites_screen.dart';
+import 'package:takatuf/views/filter_locations_screen.dart';
 import 'package:takatuf/views/home.dart';
 import 'package:takatuf/views/notifications_screen.dart';
+import 'package:takatuf/views/payment_management_screen.dart';
 import 'package:takatuf/views/profile_screen.dart';
 import 'package:takatuf/views/project_details_screen.dart';
 import 'package:takatuf/views/project_management_screen.dart';
@@ -17,6 +19,7 @@ import 'package:takatuf/views/splash.dart';
 import 'package:takatuf/views/success_screen.dart';
 import 'package:takatuf/views/update_profile_screen.dart';
 import 'package:takatuf/views/welcome_screen.dart';
+import 'views/filters_screen.dart';
 import 'views/home_screen.dart';
 
 void main() {
@@ -30,7 +33,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/contractor_ratings_screen',
+      initialRoute: '/payment_management_screen',
       // home: HomeScreen(),
       routes: {
         '/splash_screen':(context) => SplashScreen(),
@@ -51,6 +54,9 @@ class MainApp extends StatelessWidget {
         '/welcome_screen':(context) => WelcomeScreen(),
         '/notifications_screen':(context) => Notifications_Screen(),
         '/contractor_ratings_screen':(context) => ContractorRatingsScreen(),
+        '/filters_screen':(context) => FiltersScreen(),
+        '/filter_locations_screen':(context) => FilterLocationsScreen(),
+        '/payment_management_screen':(context) => PaymentManagementScreen(),
       },
     );
   }
