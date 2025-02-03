@@ -35,6 +35,8 @@ class ProjectManagementScreen extends StatelessWidget {
     },
   ];
 
+  ProjectManagementScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     double statusBarHeight = MediaQuery.of(context).padding.top;

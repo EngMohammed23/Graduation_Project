@@ -18,7 +18,6 @@ import 'package:takatuf/views/update_profile_screen.dart';
 import 'package:takatuf/views/verify_mobile_screen.dart';
 import 'package:takatuf/views/welcome_screen.dart';
 import 'package:takatuf/views/home_screen.dart';
-import 'package:takatuf/views/create_a_new_password.dart';
 
 void main() {
   runApp(const MainApp());
@@ -31,8 +30,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/contractor_ratings_screen', // يمكن تعديلها حسب الحاجة
-      home: CreateNewPasswordScreen(), // يمكن استخدام home أو initialRoute فقط
+      initialRoute: '/splash_screen', // يمكن تعديلها حسب الحاجة
+      home: SplashScreen(), // يمكن استخدام home أو initialRoute فقط
       routes: {
         '/splash_screen': (context) => SplashScreen(),
         '/home_screen': (context) => HomeScreen(),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:takatuf/widget/list_tile_setting.dart';
+import 'package:takatuf/views/list_tile_setting.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
