@@ -1,4 +1,4 @@
-package com.example.damage_assessment_project
+package edu.iug.takatuf
 
 import io.flutter.embedding.android.FlutterActivity
 
