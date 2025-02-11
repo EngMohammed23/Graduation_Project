@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Notifications_Screen extends StatefulWidget {
-  const Notifications_Screen({super.key});
+class NotificationsScreen extends StatefulWidget {
+  const NotificationsScreen({super.key});
 
   @override
-  State<Notifications_Screen> createState() => _Notifications_ScreenState();
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
 }
 
-class _Notifications_ScreenState extends State<Notifications_Screen> {
+class _NotificationsScreenState extends State<NotificationsScreen> {
   bool isSwitched = false;
   bool isSwitched1 = false;
   @override

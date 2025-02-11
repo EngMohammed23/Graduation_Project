@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:takatuf/views/signin_screen.dart';
 import 'package:takatuf/views/verify_mobile_screen.dart';
 
@@ -12,11 +13,80 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance; // Firebase Auth Instance
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  bool isPasswordHidden = true; // للتحكم في عرض/إخفاء كلمة المرور
+  bool isPasswordHidden = true;
+
+  // **Function to Register a User**
+  Future<void> _registerUser() async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+    String confirmPassword = confirmPasswordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+      Get.snackbar('Error', 'Please fill in all fields!',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
+      return;
+    }
+
+    if (password != confirmPassword) {
+      Get.snackbar('Error', 'Passwords do not match!',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
+      return;
+    }
+
+    try {
+      // **Show loading indicator**
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Center(
+          child: CircularProgressIndicator(color: Color(0xFF003366)),
+        ),
+      );
+
+      // **Create a new user in Firebase Authentication**
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      Navigator.of(context).pop(); // Close loading indicator
+
+      if (userCredential.user != null) {
+        Get.snackbar('Success', 'Account created successfully!',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white);
+
+        // Navigate to the verification screen
+        Get.to(() => VerifyMobileScreen());
+      }
+    } on FirebaseAuthException catch (e) {
+      Navigator.of(context).pop(); // Close loading indicator
+      String errorMessage = "An error occurred";
+
+      if (e.code == 'email-already-in-use') {
+        errorMessage = "This email is already registered.";
+      } else if (e.code == 'weak-password') {
+        errorMessage = "Password is too weak.";
+      } else if (e.code == 'invalid-email') {
+        errorMessage = "Invalid email format.";
+      }
+
+      Get.snackbar('Registration Failed', errorMessage,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,23 +94,16 @@ class _SignupScreenState extends State<SignupScreen> {
       appBar: AppBar(
         title: Text(
           'Sign Up',
-          style: TextStyle(
-            fontSize: 18,
-            fontFamily: 'Poppins',
-            color: Colors.black, // لون النص أسود
-          ),
+          style: TextStyle(fontSize: 18, fontFamily: 'Poppins', color: Colors.black),
         ),
-        backgroundColor: Colors.white, // خلفية AppBar بيضاء
-        iconTheme: IconThemeData(
-          color: Color(0xFF003366), // لون السهم
-        ),
-        elevation: 0, // إزالة الظل أسفل الـ AppBar
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Color(0xFF003366)),
+        elevation: 0,
       ),
-      backgroundColor: Colors.white, // خلفية الشاشة بالكامل بيضاء
+      backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height *
-              0.05, // إضافة Margin من الأعلى
+          top: MediaQuery.of(context).size.height * 0.05,
           left: 16.0,
           right: 16.0,
         ),
@@ -48,145 +111,44 @@ class _SignupScreenState extends State<SignupScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Create an account',
-                style: TextStyle(
-                  fontSize: 17,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Text('Create an account', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
               SizedBox(height: 20),
               TextField(
                 controller: nameController,
-                style: TextStyle(
-                  fontSize: 17,
-                  fontFamily: 'Poppins',
-                ),
                 decoration: InputDecoration(
-                  hintText: "Enter your full name",
-                  hintStyle: TextStyle(
-                    color: Colors.grey.withOpacity(0.6),
-                    fontSize: 13,
-                    fontFamily: 'Poppins',
-                  ),
                   labelText: 'Full Name',
-                  labelStyle: TextStyle(
-                    fontSize: 12,
-                    fontFamily: 'Poppins',
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15.0),
-                    ),
-                  ),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
                 ),
               ),
               SizedBox(height: 20),
               TextField(
                 controller: emailController,
-                style: TextStyle(
-                  fontSize: 17,
-                  fontFamily: 'Poppins',
-                ),
                 decoration: InputDecoration(
-                  hintText: "Enter your email",
-                  hintStyle: TextStyle(
-                    color: Colors.grey.withOpacity(0.6),
-                    fontSize: 13,
-                    fontFamily: 'Poppins',
-                  ),
                   labelText: 'Email',
-                  labelStyle: TextStyle(
-                    fontSize: 12,
-                    fontFamily: 'Poppins',
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15.0),
-                    ),
-                  ),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(height: 20),
               TextField(
                 controller: passwordController,
-                obscureText: isPasswordHidden, // التحكم في عرض/إخفاء النص
-                style: TextStyle(
-                  fontSize: 17,
-                  fontFamily: 'Poppins',
-                ),
+                obscureText: isPasswordHidden,
                 decoration: InputDecoration(
-                  hintText: "Enter your password",
-                  hintStyle: TextStyle(
-                    color: Colors.grey.withOpacity(0.6),
-                    fontSize: 13,
-                    fontFamily: 'Poppins',
-                  ),
                   labelText: 'Password',
-                  labelStyle: TextStyle(
-                    fontSize: 12,
-                    fontFamily: 'Poppins',
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15.0),
-                    ),
-                  ),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
                   suffixIcon: IconButton(
-                    icon: Icon(
-                      isPasswordHidden
-                          ? Icons.visibility_off // أيقونة الإخفاء
-                          : Icons.visibility, // أيقونة العرض
-                      color: Colors.grey.withOpacity(0.6), // شفافية 60%
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        isPasswordHidden = !isPasswordHidden; // تبديل الحالة
-                      });
-                    },
+                    icon: Icon(isPasswordHidden ? Icons.visibility_off : Icons.visibility),
+                    onPressed: () => setState(() => isPasswordHidden = !isPasswordHidden),
                   ),
                 ),
               ),
               SizedBox(height: 20),
               TextField(
                 controller: confirmPasswordController,
-                obscureText: isPasswordHidden, // التحكم في عرض/إخفاء النص
-                style: TextStyle(
-                  fontSize: 17,
-                  fontFamily: 'Poppins',
-                ),
+                obscureText: isPasswordHidden,
                 decoration: InputDecoration(
-                  hintText: "Confirm your password",
-                  hintStyle: TextStyle(
-                    color: Colors.grey.withOpacity(0.6),
-                    fontSize: 13,
-                    fontFamily: 'Poppins',
-                  ),
                   labelText: 'Confirm Password',
-                  labelStyle: TextStyle(
-                    fontSize: 12,
-                    fontFamily: 'Poppins',
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15.0),
-                    ),
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      isPasswordHidden
-                          ? Icons.visibility_off // أيقونة الإخفاء
-                          : Icons.visibility, // أيقونة العرض
-                      color: Colors.grey.withOpacity(0.6), // شفافية 60%
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        isPasswordHidden = !isPasswordHidden; // تبديل الحالة
-                      });
-                    },
-                  ),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
                 ),
               ),
               SizedBox(height: 30),
@@ -194,78 +156,22 @@ class _SignupScreenState extends State<SignupScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF003366),
                   minimumSize: Size(double.infinity, 60),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
                 ),
-                onPressed: () async {
-                  if (nameController.text.isEmpty ||
-                      emailController.text.isEmpty ||
-                      passwordController.text.isEmpty ||
-                      confirmPasswordController.text.isEmpty) {
-                    Get.snackbar('Error', 'Please fill in all fields!',
-                        snackPosition: SnackPosition.BOTTOM,
-                        backgroundColor: Colors.red,
-                        colorText: Colors.white);
-                  } else if (passwordController.text !=
-                      confirmPasswordController.text) {
-                    Get.snackbar('Error', 'Passwords do not match!',
-                        snackPosition: SnackPosition.BOTTOM,
-                        backgroundColor: Colors.red,
-                        colorText: Colors.white);
-                  } else {
-                    // عرض Spinner عند بدء العملية
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: Color(0xFF003366),
-                          ),
-                        );
-                      },
-                    );
-
-                    await Future.delayed(
-                        Duration(seconds: 2)); // محاكاة التأخير
-                    Navigator.of(context).pop(); // إغلاق الـ Spinner
-                    Get.to(() => VerifyMobileScreen());
-                  }
-                },
-                child: Text(
-                  'Create an Account',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Poppins',
-                    color: Colors.white,
-                  ),
-                ),
+                onPressed: _registerUser,
+                child: Text('Create an Account', style: TextStyle(color: Colors.white)),
               ),
               SizedBox(height: 20),
               Align(
                 alignment: Alignment.center,
                 child: Text.rich(
                   TextSpan(
-                    text: 'Already have an account ',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontFamily: 'Poppins',
-                      color: Colors.black,
-                    ),
+                    text: 'Already have an account? ',
                     children: [
                       TextSpan(
                         text: 'Login',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'Poppins',
-                          color: Color(0xFF003366),
-                          decoration: TextDecoration.underline,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Get.to(() => SigninScreen());
-                          },
+                        style: TextStyle(color: Color(0xFF003366), decoration: TextDecoration.underline),
+                        recognizer: TapGestureRecognizer()..onTap = () => Get.to(() => SigninScreen()),
                       ),
                     ],
                   ),
