@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "49787849581",
+    "project_id": "takatuf-704ad",
+    "storage_bucket": "takatuf-704ad.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49787849581:android:d7789dfa3de232775d6864",
+        "android_client_info": {
+          "package_name": "edu.iug.takatuf"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcQcezDf50miJsOfCl-mDvcgOxGN0Iz90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
