@@ -25,9 +25,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // **تهيئة Firebase**
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
 
   runApp(const MainApp());
 }
@@ -39,8 +37,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/splash_screen',
-      home: SplashScreen(),
+      initialRoute: '/create_new_project_screen',
       routes: {
         '/splash_screen': (context) => SplashScreen(),
         '/home_screen': (context) => HomeScreen(),
