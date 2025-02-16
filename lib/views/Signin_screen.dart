@@ -4,10 +4,11 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:takatuf/views/home_screen.dart';
-import 'package:takatuf/views/contractor_add_screen.dart';
 import 'package:takatuf/views/signup_screen.dart';
+import 'package:takatuf/views/worker_home_screen.dart';
 
-import 'contractor_home_screen.dart';
+import 'contractor/contractor_home_screen.dart';
+
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -61,7 +62,10 @@ class _SigninScreenState extends State<SigninScreen> {
 
       if (userType == "Owner") {
         Get.to(() => HomeScreen());
-      } else {
+      } else if(userType == "Worker") {
+        Get.to(() => WorkerHomeScreen());
+      }
+      else{
         Get.to(() => ContractorHomeScreen());
       }
     } on FirebaseAuthException catch (e) {

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:takatuf/controller/welcome_controller.dart';
 import 'package:takatuf/views/Signin_screen.dart';
-import 'package:takatuf/views/pageview1.dart';
-import 'package:takatuf/views/pageview2.dart';
-import 'package:takatuf/views/pageview3.dart';
-import 'package:takatuf/views/signup_screen.dart';
+import 'package:takatuf/views/splash/pageview1.dart';
+import 'package:takatuf/views/splash/pageview2.dart';
+import 'package:takatuf/views/splash/pageview3.dart';
 
 class WelcomeScreen extends StatelessWidget {
   final WelcomeController controller = Get.put(WelcomeController());

@@ -143,7 +143,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 value: userType,
                 items: [
                   DropdownMenuItem(value: "Owner", child: Text("Project Owner")),
-                  DropdownMenuItem(value: "Contractor", child: Text("Contractor/Worker")),
+                  DropdownMenuItem(value: "Contractor", child: Text("Contractor")),
+                  DropdownMenuItem(value: "Worker", child: Text("Worker")),
                 ],
                 onChanged: (value) {
                   setState(() {

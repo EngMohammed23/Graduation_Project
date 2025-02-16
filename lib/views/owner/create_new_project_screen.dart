@@ -20,7 +20,7 @@ class _CreateNewProjectScreenState extends State<CreateNewProjectScreen> {
   final _formKey = GlobalKey<FormState>();
   String titleProject = '';
   String _projectDescription = '';
-  String _projectRelatedSkills = '';
+ // String _projectRelatedSkills = '';
   String _projectDuration = '1000- 2000';
   String _projectExpectedDeliveryTime = '';
 
@@ -94,28 +94,20 @@ class _CreateNewProjectScreenState extends State<CreateNewProjectScreen> {
       await FirebaseFirestore.instance.collection('projects').add({
         'title': titleProject,
         'description': _projectDescription,
-        'relatedSkills': _projectRelatedSkills,
+      //  'relatedSkills': _projectRelatedSkills,
         'duration': _projectDuration,
         'expectedDelivery': _projectExpectedDeliveryTime,
         'imageUrl': imageUrl ?? _selectedImageWeb, // الصورة من الويب إن وُجدت
         'fileUrl': fileUrl,
         'timestamp': FieldValue.serverTimestamp(),
-      }).then((value) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Project published successfully!'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-      },).onError((error, stackTrace) {
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Project published failed $error!'),
+          content: Text('Project published successfully!'),
           duration: Duration(seconds: 2),
-        );
-      },);
-      
-
-
+        ),
+      );
     } catch (e) {
       print('Error publishing project: $e');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -185,15 +177,15 @@ class _CreateNewProjectScreenState extends State<CreateNewProjectScreen> {
                   validator: (value) =>
                   value == null || value.isEmpty ? 'Please enter a project name' : null,
                 ),
-                SizedBox(height: 14),
-                TextFormField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Skills ...',
-                    labelText: 'Project Related Skills (Optional)',
-                  ),
-                  onSaved: (value) => _projectRelatedSkills = value!,
-                ),
+                // SizedBox(height: 14),
+                // TextFormField(
+                //   decoration: InputDecoration(
+                //     border: OutlineInputBorder(),
+                //     hintText: 'Skills ...',
+                //     labelText: 'Project Related Skills (Optional)',
+                //   ),
+                //   onSaved: (value) => _projectRelatedSkills = value!,
+                // ),
                 SizedBox(height: 14.0),
                 TextFormField(
                   decoration: InputDecoration(
@@ -263,8 +255,6 @@ class _CreateNewProjectScreenState extends State<CreateNewProjectScreen> {
     );
   }
 }
-
-
 
 
 // import 'package:flutter/material.dart';
