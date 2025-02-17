@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:takatuf/views/contractor/projects.dart';
 import 'package:takatuf/views/contractor/test_screen.dart';
 import 'package:takatuf/views/owner/edit_project_screen.dart';
 import 'package:takatuf/views/owner/project_screen.dart';
@@ -40,7 +41,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/test',
+      initialRoute: '/projects',
       routes: {
         '/splash_screen': (context) => SplashScreen(),
         '/home_screen': (context) => HomeScreen(),
@@ -51,7 +52,7 @@ class MainApp extends StatelessWidget {
         '/create_new_project_screen': (context) => CreateNewProjectScreen(),
         '/setting_screen': (context) => SettingScreen(),
         '/favorites_screen': (context) => FavoritesScreen(),
-        '/project_details_screen': (context) => ProjectDetailsScreen(),
+        // '/project_details_screen': (context) => ProjectDetailsScreen(),
         '/profile_screen': (context) => ProfileScreen(),
         '/search_screen': (context) => SearchScreen(),
         '/signin_screen': (context) => SigninScreen(),
@@ -62,6 +63,7 @@ class MainApp extends StatelessWidget {
         '/welcome_screen': (context) => WelcomeScreen(),
         '/notifications_screen': (context) => NotificationsScreen(),
         '/contractor_ratings_screen': (context) => ContractorRatingsScreen(),
+        '/projects': (context) => Projects(),
       },
     );
   }
