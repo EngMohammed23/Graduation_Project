@@ -3,6 +3,7 @@ import 'package:takatuf/views/profile_screen.dart';
 import 'Home.dart';
 import 'owner/create_new_project_screen.dart';
 import 'favorites_screen.dart';
+import 'owner/home_owner_screen.dart';
 import 'search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   final List<Widget> _list = [
-    Home(),
+    HomeOwnerScreen(),
     SearchScreen(),
     CreateNewProjectScreen(),
     FavoritesScreen(),
