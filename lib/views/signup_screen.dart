@@ -81,7 +81,9 @@ class _SignupScreenState extends State<SignupScreen> {
       Get.snackbar('Success', 'Account created successfully!',
           snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green, colorText: Colors.white);
 
-      Get.to(() => VerifyMobileScreen());
+      // Get.to(() => VerifyMobileScreen());
+       Get.to(() => SigninScreen());
+
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).pop();
       print('Error Code: ${e.code}');

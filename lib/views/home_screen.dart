@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:takatuf/views/profile_screen.dart';
-import 'Home.dart';
+import 'contractor/home_contractor.dart';
 import 'owner/create_new_project_screen.dart';
 import 'favorites_screen.dart';
 import 'owner/home_owner_screen.dart';

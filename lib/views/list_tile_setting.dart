@@ -16,6 +16,9 @@ class ListTileSetting extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: ListTile(
+        onTap: () {
+          nav;
+        },
         title: Text(title,style: GoogleFonts.inter(fontSize: 15,),),
         leading: icon,
         trailing: IconButton(icon: Icon(Icons.navigate_next),onPressed: nav,),

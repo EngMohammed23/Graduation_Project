@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:takatuf/views/contractor/projects.dart';
+import 'package:takatuf/views/contractor/projects_contractor.dart';
+import 'package:takatuf/views/owner/projects_owner.dart';
 import 'package:takatuf/views/worker/workers_screen.dart';
+
+import '../requests_all_screen.dart';
+import 'Requests_Screen.dart';
 
 class HomeOwnerScreen extends StatelessWidget {
   HomeOwnerScreen({super.key});
@@ -38,12 +44,20 @@ class HomeOwnerScreen extends StatelessWidget {
               title: Text('Search'),
               onTap: () {},
             ),
+            ListTile(
+              leading: Icon(Icons.request_page),
+              title: Text('request'),
+              onTap: () {
+                Get.to(() => RequestsAllScreen(projectId: 'mdcvkdmckm'));
+              },
+            ),
           ],
         ),
       ),
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
+        title: Center(child: Text('Home Owner')),
         actions: [
           Row(
             children: [
@@ -91,7 +105,7 @@ class HomeOwnerScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Projects()),
+                      MaterialPageRoute(builder: (context) => ProjectsOwner()),
                     );
                   },
                   child: Text(

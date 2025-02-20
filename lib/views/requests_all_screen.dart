@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class RequestsScreen extends StatelessWidget {
+class RequestsAllScreen extends StatelessWidget {
   final String projectId;
 
-  RequestsScreen({required this.projectId});
+  RequestsAllScreen({required this.projectId});
 
   void updateRequestStatus(String requestId, String newStatus) {
     FirebaseFirestore.instance.collection('requests').doc(requestId).update({
@@ -19,7 +19,7 @@ class RequestsScreen extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('requests')
-            .where('projectId', isEqualTo: projectId)
+            .where('projectId', isNotEqualTo: projectId)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return Center(child: CircularProgressIndicator());

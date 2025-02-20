@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:takatuf/views/contractor/projects.dart';
+import 'package:takatuf/views/contractor/projects_contractor.dart';
 import 'package:takatuf/views/worker/workers_screen.dart';
 
-class Home extends StatelessWidget {
-  Home({super.key});
+class HomeContractor extends StatelessWidget {
+  HomeContractor({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +44,7 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
+        title: Center(child: Text('Home Contractor')),
         actions: [
           Row(
             children: [
@@ -91,7 +92,7 @@ class Home extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Projects()),
+                      MaterialPageRoute(builder: (context) => ProjectsContractor()),
                     );
                   },
                   child: Text(
@@ -286,7 +287,7 @@ class Home extends StatelessWidget {
 // import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:takatuf/views/contractor/projects.dart';
+// import 'package:takatuf/views/contractor/projects_contractor.dart';
 // import 'package:takatuf/views/worker/workers_screen.dart';
 //
 // import 'owner/project_screen.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:takatuf/views/Signin_screen.dart';
 import 'package:takatuf/views/list_tile_setting.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -52,6 +53,13 @@ class SettingScreen extends StatelessWidget {
               title: 'Feedback',
               icon: Icon(Icons.feedback),
               nav: () {},
+            ),
+            ListTileSetting(
+              title: 'LogOut',
+              icon: Icon(Icons.logout),
+              nav: () {
+                Get.to(() => SigninScreen());
+              },
             ),
           ],
         ),

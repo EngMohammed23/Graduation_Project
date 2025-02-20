@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'chat_contractor_screen.dart'; // ✅ استيراد شاشة الدردشة
 
 class ProjectDetailsScreen extends StatefulWidget {
   final String projectId;
@@ -15,15 +15,17 @@ class ProjectDetailsScreen extends StatefulWidget {
 
 class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   TextEditingController _daysController = TextEditingController();
-  bool isRequestPending = false;
+  TextEditingController _priceController = TextEditingController();
+  String requestStatus = 'none'; // الحالة: none, pending, accepted, rejected
+  String requestId = '';
 
   @override
   void initState() {
     super.initState();
-    checkIfRequestExists();
+    checkRequestStatus();
   }
 
-  void checkIfRequestExists() async {
+  void checkRequestStatus() async {
     var request = await FirebaseFirestore.instance
         .collection('requests')
         .where('projectId', isEqualTo: widget.projectId)
@@ -32,29 +34,33 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
 
     if (request.docs.isNotEmpty) {
       setState(() {
-        isRequestPending = true;
+        requestStatus = request.docs.first['status'];
+        requestId = request.docs.first.id;
       });
     }
   }
 
   void sendRequest() async {
     String daysNeeded = _daysController.text.trim();
+    String price = _priceController.text.trim();
 
-    if (daysNeeded.isEmpty) {
-      Get.snackbar('خطأ', 'يرجى إدخال عدد الأيام المطلوبة');
+    if (daysNeeded.isEmpty || price.isEmpty) {
+      Get.snackbar('خطأ', 'يرجى إدخال جميع البيانات المطلوبة');
       return;
     }
 
-    await FirebaseFirestore.instance.collection('requests').add({
+    var newRequest = await FirebaseFirestore.instance.collection('requests').add({
       'projectId': widget.projectId,
       'userId': widget.userId,
       'daysNeeded': daysNeeded,
+      'price': price,
       'status': 'pending', // قيد الانتظار
       'timestamp': FieldValue.serverTimestamp(),
     });
 
     setState(() {
-      isRequestPending = true;
+      requestStatus = 'pending';
+      requestId = newRequest.id;
     });
 
     Get.snackbar('تم الإرسال', 'تم إرسال طلبك بنجاح');
@@ -76,10 +82,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         ],
       ),
       body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance
-            .collection('projects')
-            .doc(widget.projectId)
-            .get(),
+        future: FirebaseFirestore.instance.collection('projects').doc(widget.projectId).get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -104,33 +107,34 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                     children: [
                       Image.asset('assets/images/three.jpg', fit: BoxFit.cover),
                       SizedBox(height: 9),
-                      Text(duration,
-                          style: GoogleFonts.poppins(
-                              fontSize: 12, color: Colors.black54)),
+                      Text(duration, style: TextStyle(fontSize: 12, color: Colors.black54)),
                       SizedBox(height: 3),
-                      Text(title,
-                          style: GoogleFonts.poppins(
-                              fontSize: 20, color: Colors.black)),
+                      Text(title, style: TextStyle(fontSize: 20, color: Colors.black)),
                       SizedBox(height: 3),
-                      Text(description,
-                          style: GoogleFonts.poppins(
-                              fontSize: 18, color: Colors.black)),
+                      Text(description, style: TextStyle(fontSize: 18, color: Colors.black)),
                       SizedBox(height: 10),
-                      Text('المهارات المطلوبة: $relatedSkills',
-                          style: GoogleFonts.poppins(
-                              fontSize: 16, color: Colors.black)),
+                      Text('المهارات المطلوبة: $relatedSkills', style: TextStyle(fontSize: 16, color: Colors.black)),
                     ],
                   ),
                 ),
                 Spacer(),
-                if (!isRequestPending)
+                if (requestStatus == 'none')
                   Column(
                     children: [
                       TextField(
                         controller: _daysController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          labelText: 'أدخل عدد الأيام المطلوبة',
+                          labelText: 'عدد الأيام المطلوبة',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextField(
+                        controller: _priceController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'المبلغ المطلوب بالدولار',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -145,15 +149,59 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                       ),
                     ],
                   )
-                else
-                  MaterialButton(
-                    height: 56,
-                    minWidth: 300,
-                    color: Colors.grey,
-                    textColor: Colors.white,
-                    child: Text('بانتظار القبول'),
-                    onPressed: null,
-                  ),
+                else if (requestStatus == 'pending')
+                  Container(
+                    color: Colors.cyan,
+                    child: MaterialButton(
+                      height: 56,
+                      minWidth: 300,
+                      textColor: Colors.red,
+                      child: Text('بانتظار القبول'),
+                      onPressed: null,
+                    ),
+                  )
+                else if (requestStatus == 'accepted')
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.check_circle, color: Colors.green),
+                        SizedBox(width: 10),
+                        MaterialButton(
+                          height: 56,
+                          minWidth: 200,
+                          color: Colors.blue,
+                          textColor: Colors.white,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.chat),
+                              SizedBox(width: 5),
+                              Text('فتح الدردشة'),
+                            ],
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatContractorScreen(
+                                  projectId: widget.projectId,
+                                  ownerId: widget.userId,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    )
+                  else if (requestStatus == 'rejected')
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.cancel, color: Colors.red),
+                          SizedBox(width: 10),
+                          Text('تم رفض الطلب', style: TextStyle(fontSize: 16, color: Colors.red)),
+                        ],
+                      ),
               ],
             ),
           );
@@ -162,6 +210,172 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     );
   }
 }
+
+
+// import 'package:flutter/material.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:get/get.dart';
+// import 'package:google_fonts/google_fonts.dart';
+//
+// class ProjectDetailsScreen extends StatefulWidget {
+//   final String projectId;
+//   final String userId; // معرف المستخدم الذي يقدم الطلب
+//
+//   const ProjectDetailsScreen({super.key, required this.projectId, required this.userId});
+//
+//   @override
+//   State<ProjectDetailsScreen> createState() => _ProjectDetailsScreenState();
+// }
+//
+// class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
+//   TextEditingController _daysController = TextEditingController();
+//   bool isRequestPending = false;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     checkIfRequestExists();
+//   }
+//
+//   void checkIfRequestExists() async {
+//     var request = await FirebaseFirestore.instance
+//         .collection('requests')
+//         .where('projectId', isEqualTo: widget.projectId)
+//         .where('userId', isEqualTo: widget.userId)
+//         .get();
+//
+//     if (request.docs.isNotEmpty) {
+//       setState(() {
+//         isRequestPending = true;
+//       });
+//     }
+//   }
+//
+//   void sendRequest() async {
+//     String daysNeeded = _daysController.text.trim();
+//
+//     if (daysNeeded.isEmpty) {
+//       Get.snackbar('خطأ', 'يرجى إدخال عدد الأيام المطلوبة');
+//       return;
+//     }
+//
+//     await FirebaseFirestore.instance.collection('requests').add({
+//       'projectId': widget.projectId,
+//       'userId': widget.userId,
+//       'daysNeeded': daysNeeded,
+//       'status': 'pending', // قيد الانتظار
+//       'timestamp': FieldValue.serverTimestamp(),
+//     });
+//
+//     setState(() {
+//       isRequestPending = true;
+//     });
+//
+//     Get.snackbar('تم الإرسال', 'تم إرسال طلبك بنجاح');
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         leading: IconButton(
+//           onPressed: () => Get.back(),
+//           icon: Icon(Icons.arrow_back_outlined),
+//         ),
+//         actions: [
+//           IconButton(
+//             onPressed: () {},
+//             icon: Icon(Icons.share),
+//           ),
+//         ],
+//       ),
+//       body: FutureBuilder<DocumentSnapshot>(
+//         future: FirebaseFirestore.instance
+//             .collection('projects')
+//             .doc(widget.projectId)
+//             .get(),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return Center(child: CircularProgressIndicator());
+//           }
+//           if (!snapshot.hasData || !snapshot.data!.exists) {
+//             return Center(child: Text('المشروع غير موجود'));
+//           }
+//
+//           var projectData = snapshot.data!.data() as Map<String, dynamic>;
+//           String title = projectData['title'] ?? 'بدون عنوان';
+//           String description = projectData['description'] ?? 'لا يوجد وصف';
+//           String duration = projectData['duration'] ?? 'غير متوفر';
+//           String relatedSkills = projectData['relatedSkills'] ?? 'غير متوفر';
+//
+//           return Padding(
+//             padding: const EdgeInsets.only(left: 20, right: 20, bottom: 60),
+//             child: Column(
+//               children: [
+//                 Expanded(
+//                   child: ListView(
+//                     padding: const EdgeInsets.symmetric(horizontal: 30),
+//                     children: [
+//                       Image.asset('assets/images/three.jpg', fit: BoxFit.cover),
+//                       SizedBox(height: 9),
+//                       Text(duration,
+//                           style: GoogleFonts.poppins(
+//                               fontSize: 12, color: Colors.black54)),
+//                       SizedBox(height: 3),
+//                       Text(title,
+//                           style: GoogleFonts.poppins(
+//                               fontSize: 20, color: Colors.black)),
+//                       SizedBox(height: 3),
+//                       Text(description,
+//                           style: GoogleFonts.poppins(
+//                               fontSize: 18, color: Colors.black)),
+//                       SizedBox(height: 10),
+//                       Text('المهارات المطلوبة: $relatedSkills',
+//                           style: GoogleFonts.poppins(
+//                               fontSize: 16, color: Colors.black)),
+//                     ],
+//                   ),
+//                 ),
+//                 Spacer(),
+//                 if (!isRequestPending)
+//                   Column(
+//                     children: [
+//                       TextField(
+//                         controller: _daysController,
+//                         keyboardType: TextInputType.number,
+//                         decoration: InputDecoration(
+//                           labelText: 'أدخل عدد الأيام المطلوبة',
+//                           border: OutlineInputBorder(),
+//                         ),
+//                       ),
+//                       SizedBox(height: 10),
+//                       MaterialButton(
+//                         height: 56,
+//                         minWidth: 300,
+//                         color: Color(0XFF003366),
+//                         textColor: Colors.white,
+//                         child: Text('تقديم طلب'),
+//                         onPressed: sendRequest,
+//                       ),
+//                     ],
+//                   )
+//                 else
+//                   MaterialButton(
+//                     height: 56,
+//                     minWidth: 300,
+//                     color: Colors.grey,
+//                     textColor: Colors.white,
+//                     child: Text('بانتظار القبول'),
+//                     onPressed: null,
+//                   ),
+//               ],
+//             ),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
 
 
 

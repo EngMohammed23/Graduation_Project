@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:takatuf/views/Home.dart';
+import 'package:takatuf/views/contractor/home_contractor.dart';
 import 'package:takatuf/views/home_screen.dart';
 import 'package:takatuf/views/signup_screen.dart';
 import 'package:takatuf/views/worker_home_screen.dart';
@@ -67,7 +67,7 @@ class _SigninScreenState extends State<SigninScreen> {
         Get.to(() => WorkerHomeScreen());
       }
       else{
-        Get.to(() => Home());
+        Get.to(() => HomeContractor());
       }
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).pop();

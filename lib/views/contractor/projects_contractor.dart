@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:takatuf/views/project_details_screen.dart';
+import 'package:takatuf/views/contractor/project_details_screen.dart';
 
-class Projects extends StatefulWidget {
-  const Projects({super.key});
+class ProjectsContractor extends StatefulWidget {
+  const ProjectsContractor({super.key});
 
   @override
-  State<Projects> createState() => _ProjectsState();
+  State<ProjectsContractor> createState() => _ProjectsContractorState();
 }
 
-class _ProjectsState extends State<Projects> {
+class _ProjectsContractorState extends State<ProjectsContractor> {
   String? userId; // ✅ تخزين معرف المستخدم
 
   @override
