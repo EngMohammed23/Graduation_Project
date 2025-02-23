@@ -52,7 +52,7 @@ class _ChatOwnerScreenState extends State<ChatOwnerScreen> {
                 Filter('senderId', isEqualTo: currentUserId),
                 Filter('receiverId', isEqualTo: currentUserId),
               ))
-                  .orderBy('timestamp', descending: false)
+              //    .orderBy('timestamp', descending: false)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
