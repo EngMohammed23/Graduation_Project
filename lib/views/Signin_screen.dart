@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:takatuf/views/contractor/home_contractor.dart';
 import 'package:takatuf/views/home_screen.dart';
 import 'package:takatuf/views/signup_screen.dart';
 import 'package:takatuf/views/worker_home_screen.dart';
-
-import 'contractor/contractor_home_screen.dart';
-
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -25,6 +23,15 @@ class _SigninScreenState extends State<SigninScreen> {
   final passwordController = TextEditingController();
   bool isPasswordHidden = true;
 
+  // دالة لحفظ بيانات المستخدم في shared_preferences
+  Future<void> saveUserData(User user, String userType) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userId', user.uid);
+    await prefs.setString('userType', userType);
+    await prefs.setBool('isLoggedIn', true);
+  }
+
+  // دالة لتسجيل دخول المستخدم
   Future<void> _signInUser() async {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
@@ -46,11 +53,13 @@ class _SigninScreenState extends State<SigninScreen> {
         ),
       );
 
+      // تسجيل الدخول باستخدام Firebase
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
+      // الحصول على بيانات المستخدم من Firestore
       DocumentSnapshot userDoc = await _firestore.collection("users").doc(userCredential.user!.uid).get();
       String userType = userDoc["userType"];
 
@@ -61,12 +70,15 @@ class _SigninScreenState extends State<SigninScreen> {
           backgroundColor: Colors.green,
           colorText: Colors.white);
 
+      // حفظ بيانات المستخدم في shared_preferences
+      await saveUserData(userCredential.user!, userType);
+
+      // التوجيه إلى الصفحة المناسبة بناءً على نوع المستخدم
       if (userType == "Owner") {
         Get.to(() => HomeScreen());
-      } else if(userType == "Worker") {
+      } else if (userType == "Worker") {
         Get.to(() => WorkerHomeScreen());
-      }
-      else{
+      } else {
         Get.to(() => HomeContractor());
       }
     } on FirebaseAuthException catch (e) {
@@ -171,12 +183,19 @@ class _SigninScreenState extends State<SigninScreen> {
 }
 
 
+
+
+
 // import 'package:flutter/gestures.dart';
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:takatuf/views/contractor/home_contractor.dart';
 // import 'package:takatuf/views/home_screen.dart';
 // import 'package:takatuf/views/signup_screen.dart';
+// import 'package:takatuf/views/worker_home_screen.dart';
 //
 // class SigninScreen extends StatefulWidget {
 //   const SigninScreen({super.key});
@@ -186,12 +205,22 @@ class _SigninScreenState extends State<SigninScreen> {
 // }
 //
 // class _SigninScreenState extends State<SigninScreen> {
-//   final FirebaseAuth _auth = FirebaseAuth.instance; // Firebase Auth Instance
+//   final FirebaseAuth _auth = FirebaseAuth.instance;
+//   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 //   final emailController = TextEditingController();
 //   final passwordController = TextEditingController();
 //   bool isPasswordHidden = true;
 //
-//   // **Function to Sign in a User**
+//   // دالة لحفظ بيانات المستخدم في shared_preferences
+//   Future<void> saveUserData(User user) async {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     await prefs.setString('userId', user.uid);
+//     await prefs.setString('email', user.email ?? '');
+//     await prefs.setBool('isLoggedIn', true); // تخزين حالة تسجيل الدخول
+//     await prefs.setString('userType', ''); // سيتم تحديده لاحقًا
+//   }
+//
+//   // دالة لتسجيل دخول المستخدم
 //   Future<void> _signInUser() async {
 //     String email = emailController.text.trim();
 //     String password = passwordController.text.trim();
@@ -205,7 +234,6 @@ class _SigninScreenState extends State<SigninScreen> {
 //     }
 //
 //     try {
-//       // **Show loading indicator**
 //       showDialog(
 //         context: context,
 //         barrierDismissible: false,
@@ -214,27 +242,35 @@ class _SigninScreenState extends State<SigninScreen> {
 //         ),
 //       );
 //
-//       // **Sign in user in Firebase Authentication**
+//       // تسجيل الدخول باستخدام Firebase
 //       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
 //         email: email,
 //         password: password,
 //       );
 //
-//       Navigator.of(context).pop(); // Close loading indicator
+//       // الحصول على بيانات المستخدم من Firestore
+//       DocumentSnapshot userDoc = await _firestore.collection("users").doc(userCredential.user!.uid).get();
+//       String userType = userDoc["userType"];
 //
-//       if (userCredential.user != null) {
-//         Get.snackbar('Success', 'Login successful!',
-//             snackPosition: SnackPosition.BOTTOM,
-//             backgroundColor: Colors.green,
-//             colorText: Colors.white);
+//       Navigator.of(context).pop();
 //
-//         // Navigate to Home Screen
+//       // حفظ بيانات المستخدم في shared_preferences
+//       await saveUserData(userCredential.user!);
+//
+//       // التوجيه إلى الصفحة المناسبة بناءً على نوع المستخدم
+//       SharedPreferences prefs = await SharedPreferences.getInstance();
+//       prefs.setString('userType', userType);
+//
+//       if (userType == "Owner") {
 //         Get.to(() => HomeScreen());
+//       } else if (userType == "Worker") {
+//         Get.to(() => WorkerHomeScreen());
+//       } else {
+//         Get.to(() => HomeContractor());
 //       }
 //     } on FirebaseAuthException catch (e) {
-//       Navigator.of(context).pop(); // Close loading indicator
+//       Navigator.of(context).pop();
 //       String errorMessage = "An error occurred";
-//
 //       if (e.code == 'user-not-found') {
 //         errorMessage = "No user found for this email.";
 //       } else if (e.code == 'wrong-password') {
@@ -254,10 +290,6 @@ class _SigninScreenState extends State<SigninScreen> {
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         leading: IconButton(
-//           icon: Icon(Icons.arrow_back, color: Color(0xFF003366)),
-//           onPressed: () => Navigator.of(context).pop(),
-//         ),
 //         title: Text(
 //           'Sign In',
 //           style: TextStyle(fontSize: 18, fontFamily: 'Poppins', color: Colors.black),
@@ -299,9 +331,7 @@ class _SigninScreenState extends State<SigninScreen> {
 //               Align(
 //                 alignment: Alignment.centerRight,
 //                 child: TextButton(
-//                   onPressed: () {
-//                     // **TODO: Navigate to forgot password screen**
-//                   },
+//                   onPressed: () {},
 //                   child: Text('Forgot your Password?', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
 //                 ),
 //               ),

@@ -1,6 +1,46 @@
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:takatuf/views/splash/splash.dart';
+// import 'package:takatuf/views/home_screen.dart';
+// import 'package:takatuf/views/contractor/home_contractor.dart';
+// import 'package:takatuf/views/worker_home_screen.dart';
+// import 'package:takatuf/views/signin_screen.dart';
+//
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//
+//   // **تهيئة Firebase**
+//   await Firebase.initializeApp();
+//
+//   runApp(const MainApp());
+// }
+//
+// class MainApp extends StatelessWidget {
+//   const MainApp({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return GetMaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       initialRoute: '/splash_screen',
+//       routes: {
+//         '/splash_screen': (context) => SplashScreen(),
+//         '/home_screen': (context) => HomeScreen(),
+//         '/home': (context) => HomeContractor(),
+//         '/worker_home_screen': (context) => WorkerHomeScreen(),
+//         '/signin_screen': (context) => SigninScreen(),
+//       },
+//     );
+//   }
+// }
+
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:takatuf/views/contractor/home_contractor.dart';
 import 'package:takatuf/views/contractor/projects_contractor.dart';
 import 'package:takatuf/views/contractor/test_screen.dart';
@@ -30,6 +70,8 @@ void main() async {
 
   // **تهيئة Firebase**
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+  await SharedPreferences.getInstance();
+
 
   runApp(const MainApp());
 }
