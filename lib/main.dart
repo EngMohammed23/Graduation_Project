@@ -41,7 +41,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home_screen',
+      initialRoute: '/splash_screen',
       routes: {
         '/splash_screen': (context) => SplashScreen(),
         '/home_screen': (context) => HomeScreen(),

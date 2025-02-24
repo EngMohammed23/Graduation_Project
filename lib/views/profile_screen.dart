@@ -31,6 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Text(''),
         backgroundColor: Color(0XFF003366),
         actions: [
           IconButton(onPressed: () {

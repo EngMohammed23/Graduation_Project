@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _animationController.forward();
 
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 5), () {
       Get.off(() => WelcomeScreen());
     });
   }

@@ -22,7 +22,8 @@ class WelcomeScreen extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: TextButton(
               onPressed: () {
-                Get.to(SigninScreen());
+                Get.offAll(SigninScreen());
+
               },
               child: const Text(
                 "Skip",
@@ -154,7 +155,7 @@ class WelcomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(10.0))),
                   child: TextButton(
                     onPressed: () {
-                      Get.to(SigninScreen());
+                      Get.offAll(SigninScreen());
                     },
                     child: Text(
                       "Get started",

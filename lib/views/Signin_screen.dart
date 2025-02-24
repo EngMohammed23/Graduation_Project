@@ -91,10 +91,6 @@ class _SigninScreenState extends State<SigninScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF003366)),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
         title: Text(
           'Sign In',
           style: TextStyle(fontSize: 18, fontFamily: 'Poppins', color: Colors.black),

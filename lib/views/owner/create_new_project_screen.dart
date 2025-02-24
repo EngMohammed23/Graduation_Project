@@ -123,6 +123,7 @@ class _CreateNewProjectScreenState extends State<CreateNewProjectScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Text(''),
         title: Center(
           child: Text(
             'Create New Project',
