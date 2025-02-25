@@ -4,10 +4,9 @@ publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: ^3.5.4
+  sdk: '>=3.5.4 <4.0.0'  # ضمان توافق SDK مع الإصدار المطلوب
 
 dependencies:
-  fluid_bottom_nav_bar: ^1.4.0
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -23,6 +22,14 @@ dependencies:
   firebase_storage: ^12.4.2
   cloud_firestore: ^5.6.3
   shared_preferences: ^2.5.2
+  fluid_bottom_nav_bar: ^1.4.0
+  flutter_launcher_icons: ^0.14.3
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"
+  adaptive_icon_foreground: "assets/images/logo.png"
+  adaptive_icon_background: "assets/images/logo.png"
 
 dev_dependencies:
   flutter_test:

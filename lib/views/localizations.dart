@@ -18,6 +18,18 @@ class AppLocalizations {
   String get forgotPassword => Intl.message('Forgot your Password?', name: 'forgotPassword');
   String get welcomeMessage => Intl.message('Welcome back, please sign in.', name: 'welcomeMessage');
   String get home => Intl.message('Home', name: 'home');
+  String get signInToAccount => Intl.message('Sign in to your account', name: 'signInToAccount');
+  String get createAccount => Intl.message('Create an Account', name: 'createAccount');
+  String get fullName => Intl.message('Full Name', name: 'fullName');
+  String get confirmPassword => Intl.message('Confirm Password', name: 'confirmPassword');
+  String get userType => Intl.message('User Type', name: 'userType');
+  String get pleaseFillFields => Intl.message('Please fill in all fields!', name: 'pleaseFillFields');
+  String get passwordWeak => Intl.message('Password must be at least 6 characters long!', name: 'passwordWeak');
+  String get passwordMismatch => Intl.message('Passwords do not match!', name: 'passwordMismatch');
+  String get registrationFailed => Intl.message('Registration Failed', name: 'registrationFailed');
+  String get errorOccurred => Intl.message('An error occurred', name: 'errorOccurred');
+  String get emailAlreadyInUse => Intl.message('This email is already registered.', name: 'emailAlreadyInUse');
+
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

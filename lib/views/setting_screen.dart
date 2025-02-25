@@ -11,7 +11,7 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        title: Text('settings'.tr, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         centerTitle: true,
         leading: IconButton(
           onPressed: () => Get.back(),
@@ -22,69 +22,36 @@ class SettingScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: ListView(
           children: [
-            ListTileSetting(
-              title: 'General Settings',
-              icon: Icon(Icons.settings, color: Colors.blue),
-              nav: () {},
-            ),
-            Divider(),
-
-            ListTileSetting(
-              title: 'Account Settings',
-              icon: Icon(Icons.manage_accounts, color: Colors.green),
-              nav: () {},
-            ),
-            Divider(),
-
-            ListTileSetting(
-              title: 'Privacy & Terms',
-              icon: Icon(Icons.privacy_tip, color: Colors.orange),
-              nav: () {},
-            ),
-            Divider(),
-
-            ListTileSetting(
-              title: 'About Us',
-              icon: Icon(Icons.info, color: Colors.purple),
-              nav: () {},
-            ),
-            Divider(),
-
-            ListTileSetting(
-              title: 'Help',
-              icon: Icon(Icons.help, color: Colors.red),
-              nav: () {},
-            ),
-            Divider(),
-
-            ListTileSetting(
-              title: 'Feedback',
-              icon: Icon(Icons.feedback, color: Colors.teal),
-              nav: () {},
-            ),
-            Divider(),
-
-            ListTileSetting(
-              title: 'Change Language',
-              icon: Icon(Icons.language, color: Colors.brown),
-              nav: () {
-                _showLanguageDialog(context);
-              },
-            ),
-            Divider(),
-
-            ListTileSetting(
-              title: 'Log Out',
-              icon: Icon(Icons.logout, color: Colors.red),
-              nav: () {
-                _logout(context);
-              },
-            ),
+            _buildSettingTile('generalSettings'.tr, Icons.settings, Colors.blue, () {}),
+            _divider(),
+            _buildSettingTile('accountSettings'.tr, Icons.manage_accounts, Colors.green, () {}),
+            _divider(),
+            _buildSettingTile('privacyTerms'.tr, Icons.privacy_tip, Colors.orange, () {}),
+            _divider(),
+            _buildSettingTile('aboutUs'.tr, Icons.info, Colors.purple, () {}),
+            _divider(),
+            _buildSettingTile('help'.tr, Icons.help, Colors.red, () {}),
+            _divider(),
+            _buildSettingTile('feedback'.tr, Icons.feedback, Colors.teal, () {}),
+            _divider(),
+            _buildSettingTile('changeLanguage'.tr, Icons.language, Colors.brown, () => _showLanguageDialog(context)),
+            _divider(),
+            _buildSettingTile('logOut'.tr, Icons.logout, Colors.red, () => _logout(context)),
           ],
         ),
       ),
     );
   }
+
+  Widget _buildSettingTile(String title, IconData icon, Color color, VoidCallback onTap) {
+    return ListTileSetting(
+      title: title,
+      icon: Icon(icon, color: color),
+      nav: onTap,
+    );
+  }
+
+  Widget _divider() => Divider();
 
   // دالة تسجيل الخروج
   void _logout(BuildContext context) async {
@@ -102,33 +69,28 @@ class SettingScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Choose Language'),
+          title: Text('chooseLanguage'.tr),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              RadioListTile<String>(
-                title: Text('English'),
-                value: 'en',
-                groupValue: currentLanguage,
-                onChanged: (value) {
-                  _setLanguage(value!);
-                  Get.updateLocale(Locale(value, ''));
-                  Navigator.pop(context);
-                },
-              ),
-              RadioListTile<String>(
-                title: Text('العربية'),
-                value: 'ar',
-                groupValue: currentLanguage,
-                onChanged: (value) {
-                  _setLanguage(value!);
-                  Get.updateLocale(Locale(value, ''));
-                  Navigator.pop(context);
-                },
-              ),
+              _buildLanguageOption('English', 'en', currentLanguage, context),
+              _buildLanguageOption('العربية', 'ar', currentLanguage, context),
             ],
           ),
         );
+      },
+    );
+  }
+
+  Widget _buildLanguageOption(String language, String code, String currentLanguage, BuildContext context) {
+    return RadioListTile<String>(
+      title: Text(language),
+      value: code,
+      groupValue: currentLanguage,
+      onChanged: (value) {
+        _setLanguage(value!);
+        Get.updateLocale(Locale(value, ''));
+        Navigator.pop(context);
       },
     );
   }
