@@ -8,6 +8,7 @@ import 'package:takatuf/views/contractor/home_contractor.dart';
 import 'package:takatuf/views/home_screen.dart';
 import 'package:takatuf/views/signup_screen.dart';
 import 'package:takatuf/views/worker_home_screen.dart';
+import 'localizations.dart';  // تأكد من إضافة ملف الترجمات هنا
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -103,10 +104,11 @@ class _SigninScreenState extends State<SigninScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Sign In',
-          style: TextStyle(fontSize: 18, fontFamily: 'Poppins', color: Colors.black),
-        ),
+        title: Text('Sign in',style: TextStyle(fontSize: 18, fontFamily: 'Poppins', color: Colors.black),),
+        // title: Text(
+        //   ِ"AppLocalizations.of(context).signIn",
+        //   style: TextStyle(fontSize: 18, fontFamily: 'Poppins', color: Colors.black),
+        // ),
         backgroundColor: Colors.white,
         elevation: 0,
       ),

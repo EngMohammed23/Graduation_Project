@@ -1,0 +1,10 @@
+{
+  "appName": "Takatuf",
+  "signIn": "Sign In",
+  "signUp": "Sign Up",
+  "email": "Email",
+  "password": "Password",
+  "forgotPassword": "Forgot your Password?",
+  "welcomeMessage": "Welcome back, please sign in.",
+  "home": "Home"
+}
