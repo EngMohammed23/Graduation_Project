@@ -21,7 +21,6 @@ import 'package:takatuf/views/contractor/contractor_ratings_screen.dart';
 import 'package:takatuf/views/contractor/home_contractor.dart';
 import 'package:takatuf/views/contractor/projects_contractor.dart';
 import 'package:takatuf/views/contractor/test_screen.dart';
-import 'package:takatuf/views/owner/edit_project_screen.dart';
 import 'package:takatuf/views/owner/project_screen.dart';
 import 'package:takatuf/views/owner/create_new_project_screen.dart';
 
@@ -51,6 +50,8 @@ Future<String> _getSavedLanguage() async {
 }
 
 class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
