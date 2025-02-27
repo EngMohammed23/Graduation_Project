@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:easy_localization/easy_localization.dart';
 
-// نموذج لتسجيل المقاولين
+// الشاشة الرئيسية للمقاولين
 class ContractorHomeScreen extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("هوم المقاولين")),
+      appBar: AppBar(title: Text("contractorHome".tr())),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
-
-         Center(child: Text("أهبناثبايتار",style: TextStyle(fontSize: 20),))
+            Center(
+              child: Text(
+                "contractors".tr(),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            )
           ],
         ),
       ),

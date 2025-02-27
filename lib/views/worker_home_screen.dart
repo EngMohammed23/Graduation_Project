@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class WorkerHomeScreen extends StatelessWidget {
   const WorkerHomeScreen({super.key});
@@ -6,13 +7,15 @@ class WorkerHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: [
-          Center(
-              child: Text('Worker Home Screen')
-          )
-        ],
+      appBar: AppBar(
+        title: Text('workerHome'.tr()),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Text(
+          'workerHomeScreen'.tr(),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -12,80 +12,198 @@ class NotificationsScreen extends StatefulWidget {
 class _NotificationsScreenState extends State<NotificationsScreen> {
   bool isSwitched = false;
   bool isSwitched1 = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () {
-          Get.back();
-        }, icon: Icon(Icons.arrow_back)),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
+        title: Text('notifications'.tr()),
+        centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsetsDirectional.all(40),
+        padding: const EdgeInsets.all(40),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              contentPadding: EdgeInsetsDirectional.all(0),
-              title: Text('Push Notifications',style: GoogleFonts.poppins(fontSize: 15),),
-              subtitle: Text('I would not miss it for the world. But if something else came up I would definitely not go.',style: GoogleFonts.poppins(fontSize: 12,color: Colors.grey),),
-              trailing:   Switch(
+              contentPadding: EdgeInsets.zero,
+              title: Text(
+                'pushNotifications'.tr(),
+                style: GoogleFonts.poppins(fontSize: 15),
+              ),
+              subtitle: Text(
+                'pushNotificationsDesc'.tr(),
+                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
+              ),
+              trailing: Switch(
                 value: isSwitched,
                 onChanged: (bool value) {
                   setState(() {
-                    isSwitched = value; // تغيير حالة السويتش
+                    isSwitched = value;
                   });
                 },
               ),
             ),
-            SizedBox(height: 30,),
+            SizedBox(height: 30),
             ListTile(
-              contentPadding: EdgeInsetsDirectional.all(0),
-              title: Text('Push Notifications',style: GoogleFonts.poppins(fontSize: 15),),
-              subtitle: Text('I would not miss it for the world. But if something else came up I would definitely not go.',style: GoogleFonts.poppins(fontSize: 12,color: Colors.grey),),
-              trailing:   Switch(
+              contentPadding: EdgeInsets.zero,
+              title: Text(
+                'emailNotifications'.tr(),
+                style: GoogleFonts.poppins(fontSize: 15),
+              ),
+              subtitle: Text(
+                'emailNotificationsDesc'.tr(),
+                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
+              ),
+              trailing: Switch(
                 value: isSwitched1,
                 onChanged: (bool value) {
                   setState(() {
-                    isSwitched1 = value; // تغيير حالة السويتش
+                    isSwitched1 = value;
                   });
                 },
               ),
             ),
-            SizedBox(height: 50,),
-            Text('Email',style: GoogleFonts.poppins(fontSize: 15),),
-            SizedBox(height: 5,),
-            Text('michael@dundermifflin.com',style: GoogleFonts.poppins(fontSize: 12,color: Colors.grey),),
-            SizedBox(height: 10,),
-            MaterialButton (
-                height: 31,
-                minWidth: 109,
-                color: Color(0XFF003366),
-                textColor: Colors.white,
-                child: Text('Change'),
-                onPressed: () {
-
-                }),
-            SizedBox(height: 20,),
-            Text('Password',style: GoogleFonts.poppins(fontSize: 15),),
-            SizedBox(height: 5,),
-            Text('Click below to change your password. ',style: GoogleFonts.poppins(fontSize: 12,color: Colors.grey),),
-            SizedBox(height: 10,),
-            MaterialButton (
-                height: 31,
-                minWidth: 109,
-                color: Color(0XFF003366),
-                textColor: Colors.white,
-                child: Text('Change'),
-                onPressed: () {
-
-                }),
-
-
+            SizedBox(height: 50),
+            Text(
+              'email'.tr(),
+              style: GoogleFonts.poppins(fontSize: 15),
+            ),
+            SizedBox(height: 5),
+            Text(
+              'emailAddress'.tr(),
+              style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
+            ),
+            SizedBox(height: 10),
+            MaterialButton(
+              height: 31,
+              minWidth: 109,
+              color: Color(0XFF003366),
+              textColor: Colors.white,
+              child: Text('change'.tr()),
+              onPressed: () {},
+            ),
+            SizedBox(height: 20),
+            Text(
+              'password'.tr(),
+              style: GoogleFonts.poppins(fontSize: 15),
+            ),
+            SizedBox(height: 5),
+            Text(
+              'changePasswordDesc'.tr(),
+              style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
+            ),
+            SizedBox(height: 10),
+            MaterialButton(
+              height: 31,
+              minWidth: 109,
+              color: Color(0XFF003366),
+              textColor: Colors.white,
+              child: Text('change'.tr()),
+              onPressed: () {},
+            ),
           ],
         ),
       ),
     );
   }
 }
+
+
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import 'package:google_fonts/google_fonts.dart';
+//
+// class NotificationsScreen extends StatefulWidget {
+//   const NotificationsScreen({super.key});
+//
+//   @override
+//   State<NotificationsScreen> createState() => _NotificationsScreenState();
+// }
+//
+// class _NotificationsScreenState extends State<NotificationsScreen> {
+//   bool isSwitched = false;
+//   bool isSwitched1 = false;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         leading: IconButton(onPressed: () {
+//           Get.back();
+//         }, icon: Icon(Icons.arrow_back)),
+//       ),
+//       body: Padding(
+//         padding: const EdgeInsetsDirectional.all(40),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.start,
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             ListTile(
+//               contentPadding: EdgeInsetsDirectional.all(0),
+//               title: Text('Push Notifications',style: GoogleFonts.poppins(fontSize: 15),),
+//               subtitle: Text('I would not miss it for the world. But if something else came up I would definitely not go.',style: GoogleFonts.poppins(fontSize: 12,color: Colors.grey),),
+//               trailing:   Switch(
+//                 value: isSwitched,
+//                 onChanged: (bool value) {
+//                   setState(() {
+//                     isSwitched = value; // تغيير حالة السويتش
+//                   });
+//                 },
+//               ),
+//             ),
+//             SizedBox(height: 30,),
+//             ListTile(
+//               contentPadding: EdgeInsetsDirectional.all(0),
+//               title: Text('Push Notifications',style: GoogleFonts.poppins(fontSize: 15),),
+//               subtitle: Text('I would not miss it for the world. But if something else came up I would definitely not go.',style: GoogleFonts.poppins(fontSize: 12,color: Colors.grey),),
+//               trailing:   Switch(
+//                 value: isSwitched1,
+//                 onChanged: (bool value) {
+//                   setState(() {
+//                     isSwitched1 = value; // تغيير حالة السويتش
+//                   });
+//                 },
+//               ),
+//             ),
+//             SizedBox(height: 50,),
+//             Text('Email',style: GoogleFonts.poppins(fontSize: 15),),
+//             SizedBox(height: 5,),
+//             Text('michael@dundermifflin.com',style: GoogleFonts.poppins(fontSize: 12,color: Colors.grey),),
+//             SizedBox(height: 10,),
+//             MaterialButton (
+//                 height: 31,
+//                 minWidth: 109,
+//                 color: Color(0XFF003366),
+//                 textColor: Colors.white,
+//                 child: Text('Change'),
+//                 onPressed: () {
+//
+//                 }),
+//             SizedBox(height: 20,),
+//             Text('Password',style: GoogleFonts.poppins(fontSize: 15),),
+//             SizedBox(height: 5,),
+//             Text('Click below to change your password. ',style: GoogleFonts.poppins(fontSize: 12,color: Colors.grey),),
+//             SizedBox(height: 10,),
+//             MaterialButton (
+//                 height: 31,
+//                 minWidth: 109,
+//                 color: Color(0XFF003366),
+//                 textColor: Colors.white,
+//                 child: Text('Change'),
+//                 onPressed: () {
+//
+//                 }),
+//
+//
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
