@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:takatuf/views/home_screen.dart';
 import 'package:takatuf/views/signin_screen.dart';
@@ -14,8 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _loadLanguage();
-    _navigateToNextScreen();
+    _checkLoginStatus();
   }
 
   /// تحميل اللغة المحفوظة وتحديث `EasyLocalization`
@@ -27,46 +26,35 @@ class _SplashScreenState extends State<SplashScreen> {
     context.setLocale(Locale(languageCode, ''));
   }
 
-  /// الانتقال إلى الشاشة المناسبة بعد 4 ثوانٍ
-  void _navigateToNextScreen() {
-    Timer(Duration(seconds: 4), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => SigninScreen()),
-      );
+
+  /// التحقق من حالة تسجيل الدخول
+  Future<void> _checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+    Timer(Duration(seconds: 3), () {
+      if (isLoggedIn) {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      } else {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SigninScreen()));
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.blue.shade700, Colors.purple.shade400],
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/images/logo.png', height: 200), // شعار التطبيق
-              SizedBox(height: 20),
-              Text(
-                'appName'.tr(), // استخدام `tr()` بشكل صحيح
-                style: TextStyle(
-                  fontSize: 28, // تكبير الخط
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white, // جعل النص أبيض ليتناسب مع الخلفية
-                ),
-              ),
-              SizedBox(height: 10),
-            ],
-          ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/logo.png', height: 200),
+            SizedBox(height: 20),
+            Text(
+              'appName'.tr(),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.blue),
+            ),
+          ],
         ),
       ),
     );
