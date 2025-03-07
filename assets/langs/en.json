@@ -38,7 +38,7 @@
   "name": "Name",
   "specialty": "Specialty",
   "register": "Register",
-  "contractorHome": "Contractor Home",
+  "contractorHome": "Contractor",
   "contractors": "Contractors",
   "contractorRatings": "Contractor Ratings",
   "contractorName": "Contractor Name",
@@ -46,7 +46,7 @@
   "menu": "Menu",
   "home": "Home",
   "search": "Search",
-  "homeContractor": "Home Contractor",
+  "homeContractor": "Contractor",
   "projects": "Projects",
   "seeAll": "See all",
   "noTitle": "No Title",
@@ -127,12 +127,13 @@
   "home": "Home",
   "search": "Search",
   "request": "Requests",
-  "homeOwner": "Home Owner",
+  "homeOwner": "Owner",
   "projects": "Projects",
   "seeAll": "See all",
   "noTitle": "No Title",
   "noDescription": "No Description",
   "expectedDelivery": "Expected Delivery",
+  "countProject": "Number of projects accepted",
   "duration": "Duration",
   "unknown": "Unknown",
   "allProjects": "All Projects",
@@ -297,7 +298,7 @@
   "continueWithApple": "Continue with Apple",
   "alreadyHaveAccount": "Already have an account?",
   "signIn": "Sign In",
-  "workerHome": "Worker Home",
-  "workerHomeScreen": "Worker Home Screen"
+  "workerHome": "Worker",
+  "workerHomeScreen": "Worker Screen"
 }
 

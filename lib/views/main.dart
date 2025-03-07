@@ -34,9 +34,9 @@ void main() async {
 
   runApp(
     EasyLocalization(
-      supportedLocales: [Locale('en', ''), Locale('ar', '')],
+      supportedLocales: [Locale('ar', ''), Locale('en', '')],
       path: 'assets/langs', // تحديد مسار ملفات الترجمة
-      fallbackLocale: Locale('en', ''), // تحديد اللغة الافتراضية
+      fallbackLocale: Locale('ar', ''), // تحديد اللغة الافتراضية
       startLocale: Locale(savedLanguageCode, ''), // بدء التطبيق باللغة المحفوظة
       child: MainApp(),
     ),
@@ -46,7 +46,7 @@ void main() async {
 // دالة لاسترجاع اللغة المحفوظة في SharedPreferences
 Future<String> _getSavedLanguage() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('language') ?? 'en'; // إذا لم توجد، افتراضيًا الإنجليزية
+  return prefs.getString('language') ?? 'ar'; // إذا لم توجد، افتراضيًا الإنجليزية
 }
 
 class MainApp extends StatelessWidget {

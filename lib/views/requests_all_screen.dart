@@ -20,7 +20,7 @@ class RequestsAllScreen extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('requests')
-            .where('projectId', isNotEqualTo: projectId)
+            .where('projectId', isNotEqualTo: projectId).where('status',isEqualTo: 'pending')
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return Center(child: CircularProgressIndicator());

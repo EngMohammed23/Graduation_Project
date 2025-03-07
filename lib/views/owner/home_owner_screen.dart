@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,10 +7,32 @@ import 'package:takatuf/views/contractor/projects_contractor.dart';
 import 'package:takatuf/views/owner/projects_owner.dart';
 import 'package:takatuf/views/worker/workers_screen.dart';
 import '../requests_all_screen.dart';
+import 'Requests_Screen.dart';
 
-class HomeOwnerScreen extends StatelessWidget {
+class HomeOwnerScreen extends StatefulWidget {
   HomeOwnerScreen({super.key});
 
+  @override
+  State<HomeOwnerScreen> createState() => _HomeOwnerScreenState();
+}
+
+class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
+  String? userId;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserId();
+  }
+
+  Future<void> _fetchUserId() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        userId = user.uid;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,61 +159,77 @@ class HomeOwnerScreen extends StatelessWidget {
                     separatorBuilder: (context, index) => const SizedBox(width: 13),
                     itemBuilder: (context, index) {
                       final project = projects[index].data() as Map<String, dynamic>;
-                      return Container(
-                        width: 200,
-                        padding: const EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            width: 1,
-                            color: const Color(0xFFCDD4D9),
+                      return InkWell(
+                        onTap: () {
+                          if (userId != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RequestsScreen(projectId: projects[index].id),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('loginRequired'.tr())),
+                            );
+                          }
+                        },
+                        child: Container(
+                          width: 200,
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              width: 1,
+                              color: const Color(0xFFCDD4D9),
+                            ),
                           ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(6),
-                              child: Image.asset(
-                                'assets/images/three.jpg',
-                                width: double.infinity,
-                                height: 120,
-                                fit: BoxFit.cover,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(6),
+                                child: Image.asset(
+                                  'assets/images/three.jpg',
+                                  width: double.infinity,
+                                  height: 120,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 20),
-                            Text(
-                              project['title'] ?? 'noTitle'.tr(),
-                              style: GoogleFonts.poppins(
-                                color: Colors.black,
-                                fontSize: 15,
+                              const SizedBox(height: 20),
+                              Text(
+                                project['title'] ?? 'noTitle'.tr(),
+                                style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              project['description'] ?? 'noDescription'.tr(),
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xFF979797),
-                                fontSize: 12,
+                              const SizedBox(height: 2),
+                              Text(
+                                project['description'] ?? 'noDescription'.tr(),
+                                style: GoogleFonts.poppins(
+                                  color: const Color(0xFF979797),
+                                  fontSize: 12,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              '${'expectedDelivery'.tr()}: ${project['expectedDelivery'] ?? 'unknown'.tr()}',
-                              style: GoogleFonts.poppins(
-                                color: Colors.black,
-                                fontSize: 12,
+                              const SizedBox(height: 2),
+                              Text(
+                                '${'expectedDelivery'.tr()}: ${project['expectedDelivery'] ?? 'unknown'.tr()}',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              '${'duration'.tr()}: ${project['duration'] ?? 'unknown'.tr()}',
-                              style: GoogleFonts.poppins(
-                                color: Colors.black,
-                                fontSize: 12,
+                              const SizedBox(height: 2),
+                              Text(
+                                '${'duration'.tr()}: ${project['duration'] ?? 'unknown'.tr()}',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },

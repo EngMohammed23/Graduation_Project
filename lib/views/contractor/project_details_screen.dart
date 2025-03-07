@@ -87,8 +87,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             Card(
               elevation: 5,

@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:takatuf/views/update_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -11,46 +13,67 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  String? userId;
+  Map<String, dynamic> userData = {
+    "fullName": "مستخدم افتراضي",
+    "email": "exam@gmail.com",
+    "phoneNumber": "غير متوفر",
+    "userType": "غير محدد",
+  };
 
   @override
   void initState() {
     super.initState();
-    emailController.text = "michael@gmail.com";
-    phoneController.text = "+970525 488 9625";
+    _loadUserId();
   }
 
-  @override
-  void dispose() {
-    emailController.dispose();
-    phoneController.dispose();
-    super.dispose();
+  /// تحميل UID من SharedPreferences
+  Future<void> _loadUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? storedUid = prefs.getString('userId'); // جلب UID المحفوظ
+    if (storedUid != null) {
+      setState(() {
+        userId = storedUid;
+      });
+      _fetchUserData(storedUid);
+    }
+  }
+
+  /// جلب بيانات المستخدم من Firestore باستخدام UID
+  Future<void> _fetchUserData(String uid) async {
+    try {
+      final doc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      if (doc.exists) {
+        setState(() {
+          userData = doc.data() as Map<String, dynamic>;
+        });
+      }
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Text(''),
-        backgroundColor: Color(0XFF003366),
+        leading: const SizedBox.shrink(),
+        backgroundColor: const Color(0XFF003366),
         actions: [
           IconButton(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => UpdateProfileScreen()),
+                MaterialPageRoute(builder: (context) => const UpdateProfileScreen()),
               );
             },
-            icon: Icon(Icons.edit, color: Colors.white),
+            icon: const Icon(Icons.edit, color: Colors.white),
           ),
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.notifications_active, color: Colors.white),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.settings, color: Colors.white),
+            onPressed: () {
+              Navigator.pushNamed(context, '/setting_screen');
+            },
+            icon: const Icon(Icons.settings, color: Colors.white),
           ),
         ],
       ),
@@ -58,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Container(
             height: 220,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Color(0XFF003366),
               borderRadius: BorderRadius.vertical(
                 bottom: Radius.circular(30),
@@ -66,21 +89,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
               children: [
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ClipOval(
                   child: Image.asset(
                     "assets/images/three.jpg",
-                    width: 85,
-                    height: 85,
+                    width: 100,
+                    height: 100,
                     fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
-                  "Michael Scott",
+                  userData["fullName"] ?? "غير متوفر",
                   style: GoogleFonts.poppins(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -90,133 +111,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Form(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 5),
-                  TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.email),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      labelText: 'email'.tr(),
-                    ),
-                  ),
-                  SizedBox(height: 25),
-                  TextField(
-                    controller: phoneController,
-                    decoration: InputDecoration(
-                      prefixIcon: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(width: 10),
-                          Image.asset('assets/images/palestine_flag.png', height: 20),
-                          SizedBox(width: 10),
-                        ],
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      labelText: 'phoneNumber'.tr(),
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20),
-                      _buildSectionHeader(context, "myProject".tr()),
-                      _buildProjectGrid([
-                        'assets/images/three.jpg',
-                        'assets/images/three.jpg',
-                        'assets/images/three.jpg',
-                      ]),
-                      SizedBox(height: 20),
-                      _buildSectionHeader(context, "contractors".tr()),
-                      _buildContractorGrid([
-                        'assets/images/three.jpg',
-                        'assets/images/three.jpg',
-                        'assets/images/three.jpg',
-                      ]),
-                      SizedBox(height: 10),
-                    ],
-                  ),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 5),
+                Text('email'.tr(), style: const TextStyle(fontSize: 20)),
+                const SizedBox(height: 3),
+                Text(userData["email"] ?? "غير متوفر", style: const TextStyle(fontSize: 20)),
+                const SizedBox(height: 15),
+                Text('phoneNumber'.tr(), style: const TextStyle(fontSize: 20)),
+                const SizedBox(height: 3),
+                Text(userData["phoneNumber"] ?? "غير متوفر", style: const TextStyle(fontSize: 20)),
+                const SizedBox(height: 15),
+                Text('userType'.tr(), style: const TextStyle(fontSize: 20)),
+                const SizedBox(height: 3),
+                Text(userData["userType"] ?? "غير متوفر", style: const TextStyle(fontSize: 20)),
+              ],
             ),
           ),
         ],
       ),
     );
   }
-
-  Widget _buildSectionHeader(BuildContext context, String title) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        TextButton(
-          onPressed: () {},
-          child: Text("seeAll".tr()),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProjectGrid(List<String> images) {
-    return SizedBox(
-      height: 120,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: images.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                images[index],
-                width: 120,
-                height: 130,
-                fit: BoxFit.cover,
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildContractorGrid(List<String> images) {
-    return SizedBox(
-      height: 120,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: images.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                images[index],
-                width: 120,
-                height: 130,
-                fit: BoxFit.cover,
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
 }
-

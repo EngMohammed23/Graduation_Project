@@ -19,6 +19,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
+  final phoneNumController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   String userType = "Owner"; // Default user type
@@ -29,8 +30,9 @@ class _SignupScreenState extends State<SignupScreen> {
     String password = passwordController.text.trim();
     String confirmPassword = confirmPasswordController.text.trim();
     String fullName = nameController.text.trim();
+    String phoneNum = phoneNumController.text.trim();
 
-    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty || fullName.isEmpty) {
+    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty || fullName.isEmpty|| phoneNum.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("fillAllFields".tr()), backgroundColor: Colors.red),
       );
@@ -74,6 +76,7 @@ class _SignupScreenState extends State<SignupScreen> {
       await _firestore.collection("users").doc(userCredential.user!.uid).set({
         "fullName": fullName,
         "email": email,
+        "phoneNumber": phoneNum,
         "userType": userType,
         "uid": userCredential.user!.uid,
       });
@@ -128,6 +131,7 @@ class _SignupScreenState extends State<SignupScreen> {
               TextField(
                 controller: nameController,
                 decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.person),
                   labelText: 'fullName'.tr(),
                   border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
                 ),
@@ -136,10 +140,21 @@ class _SignupScreenState extends State<SignupScreen> {
               TextField(
                 controller: emailController,
                 decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.email),
                   labelText: 'email'.tr(),
                   border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
                 ),
                 keyboardType: TextInputType.emailAddress,
+              ),
+              SizedBox(height: 20),
+              TextField(
+                controller: phoneNumController,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.phone),
+                  labelText: 'phoneNumber'.tr(),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                ),
+                keyboardType: TextInputType.phone,
               ),
               SizedBox(height: 20),
               DropdownButtonFormField<String>(
@@ -164,6 +179,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 controller: passwordController,
                 obscureText: isPasswordHidden,
                 decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.password),
                   labelText: 'password'.tr(),
                   border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
                   suffixIcon: IconButton(
@@ -177,6 +193,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 controller: confirmPasswordController,
                 obscureText: isPasswordHidden,
                 decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.password),
                   labelText: 'confirmPassword'.tr(),
                   border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
                 ),

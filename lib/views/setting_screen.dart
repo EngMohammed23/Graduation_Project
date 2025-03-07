@@ -57,10 +57,8 @@ class SettingScreen extends StatelessWidget {
   void _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => SigninScreen()),
-    );
+    Navigator.pushNamedAndRemoveUntil(context, '/signin_screen',(route) => false,);
+
   }
 
   // دالة اختيار اللغة
