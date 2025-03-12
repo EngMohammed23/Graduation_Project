@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:takatuf/views/home_screen.dart';
+import 'package:takatuf/views/owner/home_screen.dart';
 import 'package:takatuf/views/signin_screen.dart';
 
 class SplashScreen extends StatefulWidget {

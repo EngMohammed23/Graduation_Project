@@ -59,11 +59,11 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
               title: Text('home'.tr()),
               onTap: () {},
             ),
-            ListTile(
-              leading: Icon(Icons.search),
-              title: Text('search'.tr()),
-              onTap: () {},
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.search),
+            //   title: Text('search'.tr()),
+            //   onTap: () {},
+            // ),
             ListTile(
               leading: Icon(Icons.request_page),
               title: Text('request'.tr()),
@@ -82,7 +82,9 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Center(child: Text('homeOwner'.tr())),
+        title: Center(child: Text('homeOwner'.tr(),style: GoogleFonts.tajawal(
+
+        ),),),
         actions: [
           Row(
             children: [
@@ -92,12 +94,12 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
                 },
                 icon: Icon(Icons.settings),
               ),
-              IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/favorites_screen');
-                },
-                icon: Icon(Icons.favorite),
-              )
+              // IconButton(
+              //   onPressed: () {
+              //     Navigator.pushNamed(context, '/favorites_screen');
+              //   },
+              //   icon: Icon(Icons.favorite),
+              // )
             ],
           )
         ],
@@ -121,7 +123,7 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
               children: [
                 Text(
                   'projects'.tr(),
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.tajawal(
                     color: Colors.black,
                     fontSize: 22,
                   ),
@@ -135,7 +137,7 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
                   },
                   child: Text(
                     'seeAll'.tr(),
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.tajawal(
                       color: const Color(0xFF979797),
                       fontSize: 15,
                     ),
@@ -199,7 +201,7 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
                               const SizedBox(height: 20),
                               Text(
                                 project['title'] ?? 'noTitle'.tr(),
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.tajawal(
                                   color: Colors.black,
                                   fontSize: 15,
                                 ),
@@ -207,15 +209,16 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
                               const SizedBox(height: 2),
                               Text(
                                 project['description'] ?? 'noDescription'.tr(),
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.tajawal(
                                   color: const Color(0xFF979797),
                                   fontSize: 12,
                                 ),
+                        maxLines: 2,
                               ),
                               const SizedBox(height: 2),
                               Text(
                                 '${'expectedDelivery'.tr()}: ${project['expectedDelivery'] ?? 'unknown'.tr()}',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.tajawal(
                                   color: Colors.black,
                                   fontSize: 12,
                                 ),
@@ -223,7 +226,7 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
                               const SizedBox(height: 2),
                               Text(
                                 '${'duration'.tr()}: ${project['duration'] ?? 'unknown'.tr()}',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.tajawal(
                                   color: Colors.black,
                                   fontSize: 12,
                                 ),

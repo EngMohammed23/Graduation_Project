@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:takatuf/views/profile_screen.dart';
-import 'contractor/home_contractor.dart';
-import 'owner/create_new_project_screen.dart';
-import 'favorites_screen.dart';
-import 'owner/home_owner_screen.dart';
-import 'search_screen.dart';
+import '../contractor/home_contractor.dart';
+import 'create_new_project_screen.dart';
+import '../favorites_screen.dart';
+import 'home_owner_screen.dart';
+import '../search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     HomeOwnerScreen(),
     SearchScreen(),
     CreateNewProjectScreen(),
-    FavoritesScreen(),
+    // FavoritesScreen(),
     ProfileScreen()
   ];
 
@@ -51,10 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: _buildCustomIcon(Icons.add_circle_outline, 2),
             label: 'add'.tr(),
           ),
-          BottomNavigationBarItem(
-            icon: _buildCustomIcon(Icons.favorite_border, 3),
-            label: 'favorite'.tr(),
-          ),
+          // BottomNavigationBarItem(
+          //   icon: _buildCustomIcon(Icons.favorite_border, 3),
+          //   label: 'favorite'.tr(),
+          // ),
           BottomNavigationBarItem(
             icon: _buildCustomIcon(Icons.person, 4),
             label: 'profile'.tr(),

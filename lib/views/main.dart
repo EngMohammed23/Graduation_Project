@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'firebase_options.dart';
 import 'package:takatuf/views/splash/splash.dart';
 import 'package:takatuf/views/signin_screen.dart';
 import 'package:takatuf/views/signup_screen.dart';
-import 'package:takatuf/views/home_screen.dart';
+import 'package:takatuf/views/owner/home_screen.dart';
 import 'package:takatuf/views/project_management_screen.dart';
 import 'package:takatuf/views/setting_screen.dart';
 import 'package:takatuf/views/favorites_screen.dart';
@@ -55,6 +56,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        textTheme: GoogleFonts.tajawalTextTheme(),
+      ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/splash_screen',
       routes: {
