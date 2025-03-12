@@ -198,6 +198,7 @@ class _HomeContractorState extends State<HomeContractor> {
                                   color: const Color(0xFF979797),
                                   fontSize: 12,
                                 ),
+                                maxLines: 2,
                               ),
                               const SizedBox(height: 2),
                               Text(
@@ -209,7 +210,7 @@ class _HomeContractorState extends State<HomeContractor> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                '${'duration'.tr()}: ${project['duration'] ?? 'unknown'.tr()}',
+                                '${'expectedBudget'.tr()}: ${project['duration'] ?? 'unknown'.tr()}',
                                 style: GoogleFonts.poppins(
                                   color: Colors.black,
                                   fontSize: 12,

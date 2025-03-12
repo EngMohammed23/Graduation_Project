@@ -225,7 +225,7 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                '${'duration'.tr()}: ${project['duration'] ?? 'unknown'.tr()}',
+                                '${'expectedBudget'.tr()}: ${project['duration'] ?? 'unknown'.tr()}',
                                 style: GoogleFonts.tajawal(
                                   color: Colors.black,
                                   fontSize: 12,

@@ -135,7 +135,7 @@ class _ProjectsOwnerState extends State<ProjectsOwner> {
                                                 style: GoogleFonts.inter(fontSize: 14),
                                               ),
                                               Text(
-                                                '${'projectDuration'.tr()}: $duration',
+                                                '${'expectedBudget'.tr()}: $duration',
                                                 style: GoogleFonts.inter(fontSize: 14),
                                               ),
                                               Text(
