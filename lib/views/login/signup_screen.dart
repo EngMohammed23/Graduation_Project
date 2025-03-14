@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:takatuf/views/signin_screen.dart';
-import 'package:takatuf/views/verify_mobile_screen.dart';
+import 'package:takatuf/views/login/Signin_screen.dart';
+
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});

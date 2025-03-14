@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:takatuf/views/signin_screen.dart';
+import 'package:takatuf/views/login/Signin_screen.dart';
 
 class WelcomeController extends GetxController {
   var currentPage = 0.obs;

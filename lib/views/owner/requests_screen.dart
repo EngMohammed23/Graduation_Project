@@ -154,6 +154,7 @@ class RequestsScreen extends StatelessWidget {
               String daysNeeded = request['daysNeeded'] ?? '0';
               String status = request['status'] ?? 'pending';
               String price = request['price'] ?? 'N/A';
+              String email = request['email'] ?? 'example@gmail.com';
 
               // ترجمة الحالة
               Map<String, String> statusTranslations = {
@@ -181,7 +182,7 @@ class RequestsScreen extends StatelessWidget {
                 ),
                 child: ListTile(
                   contentPadding: EdgeInsets.all(16.0),
-                  title: Text('${'user'.tr()}: $userId',
+                  title: Text('${'user'.tr()}: $email',
                       style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

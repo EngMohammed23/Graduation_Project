@@ -5,9 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:takatuf/views/contractor/home_contractor.dart';
+import 'package:takatuf/views/login/signup_screen.dart';
 import 'package:takatuf/views/owner/home_screen.dart';
-import 'package:takatuf/views/signup_screen.dart';
-import 'package:takatuf/views/worker_home_screen.dart';
+
+
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -68,7 +69,7 @@ class _SigninScreenState extends State<SigninScreen> {
       if (userType == "Owner") {
         nextScreen = HomeScreen();
       } else if (userType == "Worker") {
-        nextScreen = WorkerHomeScreen();
+        nextScreen = HomeContractor();
       } else {
         nextScreen = HomeContractor();
       }

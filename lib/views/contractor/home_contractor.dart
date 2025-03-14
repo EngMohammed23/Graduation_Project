@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:takatuf/views/contractor/project_details_screen.dart';
 import 'package:takatuf/views/contractor/projects_contractor.dart';
-import 'package:takatuf/views/worker/workers_screen.dart';
+
 
 class HomeContractor extends StatefulWidget {
   HomeContractor({super.key});
@@ -17,6 +17,7 @@ class HomeContractor extends StatefulWidget {
 class _HomeContractorState extends State<HomeContractor> {
 
   String? userId;
+  String? email;
 
   @override
   void initState() {
@@ -29,6 +30,7 @@ class _HomeContractorState extends State<HomeContractor> {
     if (user != null) {
       setState(() {
         userId = user.uid;
+        email = user.email;
       });
     }
   }
@@ -152,7 +154,7 @@ class _HomeContractorState extends State<HomeContractor> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ProjectDetailsScreen(projectId: projects[index].id, userId: userId!,),
+                                builder: (context) => ProjectDetailsScreen(projectId: projects[index].id, userId: userId!,email: email!,),
                               ),
                             );
                           } else {
@@ -162,7 +164,7 @@ class _HomeContractorState extends State<HomeContractor> {
                           }
                         },
                         child: Container(
-                          width: 200,
+                          width: 220,
                           padding: const EdgeInsets.all(15),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
@@ -241,7 +243,7 @@ class _HomeContractorState extends State<HomeContractor> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => WorkersScreen()),
+                      MaterialPageRoute(builder: (context) => HomeContractor()),
                     );
                   },
                   child: Text(

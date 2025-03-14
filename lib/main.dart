@@ -3,25 +3,23 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'firebase_options.dart';
+import 'package:takatuf/views/login/Signin_screen.dart';
+import 'package:takatuf/views/login/signup_screen.dart';
+import 'package:takatuf/views/others/profile_screen.dart';
+import 'views/others/firebase_options.dart';
 import 'package:takatuf/views/splash/splash.dart';
-import 'package:takatuf/views/signin_screen.dart';
-import 'package:takatuf/views/signup_screen.dart';
 import 'package:takatuf/views/owner/home_screen.dart';
-import 'package:takatuf/views/project_management_screen.dart';
-import 'package:takatuf/views/setting_screen.dart';
-import 'package:takatuf/views/favorites_screen.dart';
-import 'package:takatuf/views/profile_screen.dart';
-import 'package:takatuf/views/search_screen.dart';
-import 'package:takatuf/views/success_screen.dart';
-import 'package:takatuf/views/update_profile_screen.dart';
-import 'package:takatuf/views/verify_mobile_screen.dart';
-import 'package:takatuf/views/welcome_screen.dart';
-import 'package:takatuf/views/notifications_screen.dart';
+import 'package:takatuf/views/others/setting_screen.dart';
+import 'package:takatuf/views/others/favorites_screen.dart';
+import 'package:takatuf/views/others/search_screen.dart';
+import 'package:takatuf/views/login/success_screen.dart';
+import 'package:takatuf/views/others/update_profile_screen.dart';
+import 'package:takatuf/views/login/verify_mobile_screen.dart';
+import 'package:takatuf/views/splash/welcome_screen.dart';
+import 'package:takatuf/views/others/notifications_screen.dart';
 import 'package:takatuf/views/contractor/contractor_ratings_screen.dart';
 import 'package:takatuf/views/contractor/home_contractor.dart';
 import 'package:takatuf/views/contractor/projects_contractor.dart';
-import 'package:takatuf/views/contractor/test_screen.dart';
 import 'package:takatuf/views/owner/project_screen.dart';
 import 'package:takatuf/views/owner/create_new_project_screen.dart';
 
@@ -66,8 +64,6 @@ class MainApp extends StatelessWidget {
         '/home_screen': (context) => HomeScreen(),
         '/project_screen': (context) => ProjectsScreen(),
         '/home': (context) => HomeContractor(),
-        '/test': (context) => ProjectsAndWorkersScreen(),
-        '/project_management_screen': (context) => ProjectManagementScreen(),
         '/create_new_project_screen': (context) => CreateNewProjectScreen(),
         '/setting_screen': (context) => SettingScreen(),
         '/favorites_screen': (context) => FavoritesScreen(),

@@ -5,8 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:takatuf/views/contractor/projects_contractor.dart';
 import 'package:takatuf/views/owner/projects_owner.dart';
-import 'package:takatuf/views/worker/workers_screen.dart';
-import '../requests_all_screen.dart';
+import '../others/requests_all_screen.dart';
 import 'Requests_Screen.dart';
 
 class HomeOwnerScreen extends StatefulWidget {

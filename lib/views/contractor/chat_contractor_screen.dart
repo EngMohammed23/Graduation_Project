@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:intl/intl.dart';
 
 class ChatContractorScreen extends StatefulWidget {
   final String projectId;
@@ -26,6 +27,8 @@ class _ChatContractorScreenState extends State<ChatContractorScreen> {
       'receiverId': widget.ownerId,
       'message': _messageController.text.trim(),
       'timestamp': FieldValue.serverTimestamp(),
+    }).catchError((error) {
+      print("❌ خطأ أثناء إرسال الرسالة: $error");
     });
 
     _messageController.clear();
@@ -49,10 +52,6 @@ class _ChatContractorScreenState extends State<ChatContractorScreen> {
               stream: FirebaseFirestore.instance
                   .collection('chats')
                   .where('projectId', isEqualTo: widget.projectId)
-                  .where(Filter.or(
-                Filter('senderId', isEqualTo: currentUserId),
-                Filter('receiverId', isEqualTo: currentUserId),
-              ))
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -60,7 +59,10 @@ class _ChatContractorScreenState extends State<ChatContractorScreen> {
                 }
 
                 if (snapshot.hasError) {
-                  return Center(child: Text('errorLoadingMessages'.tr()));
+                  return Center(
+                      child: Text(
+                        'errorLoadingMessages'.tr(args: [snapshot.error.toString()]),
+                      ));
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -74,17 +76,27 @@ class _ChatContractorScreenState extends State<ChatContractorScreen> {
 
                 var messages = snapshot.data!.docs;
 
+                messages.sort((a, b) {
+                  var timeA = (a['timestamp'] as Timestamp?)?.toDate() ?? DateTime(2000);
+                  var timeB = (b['timestamp'] as Timestamp?)?.toDate() ?? DateTime(2000);
+                  return timeB.compareTo(timeA);
+                });
+
                 return ListView.builder(
-                  reverse: true, // عرض الرسائل من الأحدث إلى الأقدم
+                  reverse: true, // ترتيب الرسائل من الأحدث إلى الأقدم
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     var message = messages[index].data() as Map<String, dynamic>;
 
                     if (!message.containsKey('senderId') || !message.containsKey('message')) {
-                      return SizedBox(); // تجنب حدوث أخطاء بسبب بيانات غير مكتملة
+                      return SizedBox();
                     }
 
                     bool isMe = message['senderId'] == currentUserId;
+                    Timestamp? timestamp = message['timestamp'] as Timestamp?;
+                    String time = timestamp != null
+                        ? DateFormat('hh:mm a').format(timestamp.toDate())
+                        : '...';
 
                     return Align(
                       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
@@ -95,9 +107,25 @@ class _ChatContractorScreenState extends State<ChatContractorScreen> {
                           color: isMe ? Colors.blue : Colors.grey[300],
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Text(
-                          message['message'],
-                          style: TextStyle(color: isMe ? Colors.white : Colors.black),
+                        child: Column(
+                          crossAxisAlignment:
+                          isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              message['message'],
+                              style: TextStyle(
+                                color: isMe ? Colors.white : Colors.black,
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              time,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: isMe ? Colors.white70 : Colors.black54,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     );

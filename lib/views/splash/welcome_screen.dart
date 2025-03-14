@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:takatuf/views/signin_screen.dart';
+import 'package:takatuf/views/login/Signin_screen.dart';
 import 'package:takatuf/views/splash/pageview1.dart';
 import 'package:takatuf/views/splash/pageview2.dart';
 import 'package:takatuf/views/splash/pageview3.dart';

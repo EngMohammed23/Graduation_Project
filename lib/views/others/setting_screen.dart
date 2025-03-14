@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:takatuf/views/list_tile_setting.dart';
-import 'signin_screen.dart';
+import 'package:takatuf/views/others/list_tile_setting.dart';
+
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});

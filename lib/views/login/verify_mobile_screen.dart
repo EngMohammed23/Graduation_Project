@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:takatuf/views/login/Signin_screen.dart';
 import 'success_screen.dart';
-import 'signin_screen.dart';
 
 class VerifyMobileScreen extends StatelessWidget {
   final phoneController = TextEditingController();

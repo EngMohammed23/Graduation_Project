@@ -7,8 +7,9 @@ import 'chat_contractor_screen.dart';
 class ProjectDetailsScreen extends StatefulWidget {
   final String projectId;
   final String userId;
+  final String email;
 
-  const ProjectDetailsScreen({super.key, required this.projectId, required this.userId});
+  const ProjectDetailsScreen({super.key, required this.projectId, required this.userId,required this.email});
 
   @override
   State<ProjectDetailsScreen> createState() => _ProjectDetailsScreenState();
@@ -44,6 +45,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
       'daysNeeded': daysNeeded,
       'price': price,
       'status': 'pending',
+      'email':widget.email,
       'timestamp': FieldValue.serverTimestamp(),
     });
 

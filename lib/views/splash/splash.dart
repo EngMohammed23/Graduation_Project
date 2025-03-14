@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:takatuf/views/owner/home_screen.dart';
-import 'package:takatuf/views/signin_screen.dart';
+import 'package:takatuf/views/splash/welcome_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (isLoggedIn) {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
       } else {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SigninScreen()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
       }
     });
   }

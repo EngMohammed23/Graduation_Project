@@ -14,6 +14,7 @@ class ProjectsContractor extends StatefulWidget {
 
 class _ProjectsContractorState extends State<ProjectsContractor> {
   String? userId;
+  String? email;
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _ProjectsContractorState extends State<ProjectsContractor> {
     if (user != null) {
       setState(() {
         userId = user.uid;
+        email = user.email;
       });
     }
   }
@@ -97,6 +99,7 @@ class _ProjectsContractorState extends State<ProjectsContractor> {
                                         builder: (context) => ProjectDetailsScreen(
                                           projectId: projectId,
                                           userId: userId!,
+                                          email: email!,
                                         ),
                                       ),
                                     );
