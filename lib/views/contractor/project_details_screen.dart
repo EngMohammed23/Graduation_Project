@@ -134,7 +134,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                         Text('${'description'.tr()}: ${projectData!['description']}',
                             style: TextStyle(fontSize: 16, color: Colors.black54)),
                         SizedBox(height: 8),
-                        Text('${'projectDuration'.tr()}: ${projectData!['duration']}',
+                        Text('${'expectedBudget'.tr()}: ${projectData!['duration']}',
                             style: TextStyle(fontSize: 16, color: Colors.black54)),
                         SizedBox(height: 8),
                         Text('${'expectedDelivery'.tr()}: ${projectData!['expectedDelivery']}',
