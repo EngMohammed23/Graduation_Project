@@ -1,86 +1,47 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart'; // تأكد من استيراد easy_localization
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/instance_manager.dart';
+import '../../controller/chat_controller.dart';
 
-class ChatContractorScreen extends StatefulWidget {
+
+class ChatScreen extends StatelessWidget {
   final String projectId;
-  final String ownerId; // معرف صاحب المشروع
+  final String userId;
 
-  const ChatContractorScreen({required this.projectId, required this.ownerId});
-
-  @override
-  _ChatContractorScreenState createState() => _ChatContractorScreenState();
-}
-
-class _ChatContractorScreenState extends State<ChatContractorScreen> {
-  final TextEditingController _messageController = TextEditingController();
-  String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
-
-  void sendMessage() {
-    if (_messageController.text.trim().isEmpty || currentUserId == null) return;
-
-    FirebaseFirestore.instance.collection('chats').add({
-      'projectId': widget.projectId,
-      'senderId': currentUserId,
-      'receiverId': widget.ownerId,
-      'message': _messageController.text.trim(),
-      'timestamp': FieldValue.serverTimestamp(),
-    }).catchError((error) {
-      print("❌ خطأ أثناء إرسال الرسالة: $error");
-    });
-
-    _messageController.clear();
-  }
+  const ChatScreen({required this.projectId, required this.userId});
 
   @override
   Widget build(BuildContext context) {
-    if (currentUserId == null) {
-      return Scaffold(
-        appBar: AppBar(title: Text('chat'.tr())),
-        body: Center(child: Text('pleaseLoginToChat'.tr())),
-      );
-    }
+    final chatController = Get.put(ChatController());
 
     return Scaffold(
-      appBar: AppBar(title: Text('chat'.tr())),
+      appBar: AppBar(title: Text('chat'.tr())), // استخدم .tr() من easy_localization
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('chats')
-                  .where('projectId', isEqualTo: widget.projectId)
-                  .snapshots(),
+            child: StreamBuilder<List<QueryDocumentSnapshot>>(
+              stream: chatController.getMessages(projectId),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasError) {
-                  return Center(
-                      child: Text(
-                        'errorLoadingMessages'.tr(args: [snapshot.error.toString()]),
-                      ));
+                  return Center(child: Text('errorLoadingMessages'.tr(args: [snapshot.error.toString()])));
                 }
 
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Center(
                     child: Text(
-                      'noMessagesYet'.tr(),
+                      'noMessagesYet'.tr(), // استخدم .tr() من easy_localization
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                   );
                 }
 
-                var messages = snapshot.data!.docs;
-
-                messages.sort((a, b) {
-                  var timeA = (a['timestamp'] as Timestamp?)?.toDate() ?? DateTime(2000);
-                  var timeB = (b['timestamp'] as Timestamp?)?.toDate() ?? DateTime(2000);
-                  return timeB.compareTo(timeA);
-                });
+                var messages = snapshot.data!;
 
                 return ListView.builder(
                   reverse: true, // ترتيب الرسائل من الأحدث إلى الأقدم
@@ -88,11 +49,7 @@ class _ChatContractorScreenState extends State<ChatContractorScreen> {
                   itemBuilder: (context, index) {
                     var message = messages[index].data() as Map<String, dynamic>;
 
-                    if (!message.containsKey('senderId') || !message.containsKey('message')) {
-                      return SizedBox();
-                    }
-
-                    bool isMe = message['senderId'] == currentUserId;
+                    bool isMe = message['senderId'] == chatController.currentUserId;
                     Timestamp? timestamp = message['timestamp'] as Timestamp?;
                     String time = timestamp != null
                         ? DateFormat('hh:mm a').format(timestamp.toDate())
@@ -140,9 +97,9 @@ class _ChatContractorScreenState extends State<ChatContractorScreen> {
               children: [
                 Expanded(
                   child: TextField(
-                    controller: _messageController,
+                    controller: chatController.messageController,
                     decoration: InputDecoration(
-                      hintText: 'writeMessage'.tr(),
+                      hintText: 'writeMessage'.tr(), // استخدم .tr() من easy_localization
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -151,7 +108,7 @@ class _ChatContractorScreenState extends State<ChatContractorScreen> {
                 ),
                 IconButton(
                   icon: Icon(Icons.send, color: Colors.blue),
-                  onPressed: sendMessage,
+                  onPressed: () => chatController.sendMessage(projectId, userId),
                 ),
               ],
             ),
@@ -161,4 +118,3 @@ class _ChatContractorScreenState extends State<ChatContractorScreen> {
     );
   }
 }
-

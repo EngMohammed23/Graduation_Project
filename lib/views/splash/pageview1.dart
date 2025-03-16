@@ -15,7 +15,7 @@ class Pageview1 extends StatelessWidget {
           ),
           Container(
             width: 350,
-            height: 450,
+            height: 400,
             margin: EdgeInsets.only(top: 20),
             decoration: BoxDecoration(
               image: DecorationImage(

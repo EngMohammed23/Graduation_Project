@@ -1,43 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:takatuf/controller/contractor/contractor_ratings_controller.dart';
 
-class ContractorRatingsScreen extends StatefulWidget {
+
+class ContractorRatingsScreen extends StatelessWidget {
   const ContractorRatingsScreen({super.key});
 
   @override
-  State<ContractorRatingsScreen> createState() =>
-      _ContractorRatingsScreenState();
-}
-
-class _ContractorRatingsScreenState extends State<ContractorRatingsScreen> {
-  final List<Map<String, String>> contractors = [
-    {
-      'image': 'assets/images/three.jpg',
-      'title': 'contractorName'.tr(),
-      '_rating': '3.0',
-    },
-    {
-      'image': 'assets/images/three.jpg',
-      'title': 'contractorName'.tr(),
-      '_rating': '3.0',
-    },
-    {
-      'image': 'assets/images/three.jpg',
-      'title': 'contractorName'.tr(),
-      '_rating': '3.0',
-    },
-    {
-      'image': 'assets/images/three.jpg',
-      'title': 'contractorName'.tr(),
-      '_rating': '3.0',
-    },
-  ];
-  double _rating = 3.0;
-
-  @override
   Widget build(BuildContext context) {
+    // استخدام GetX للتحكم في الController
+    final ContractorRatingsController controller = Get.put(ContractorRatingsController());
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0XFF003366),
@@ -64,8 +41,7 @@ class _ContractorRatingsScreenState extends State<ContractorRatingsScreen> {
           Container(
             width: double.infinity,
             height: 220,
-            padding:
-            EdgeInsetsDirectional.symmetric(horizontal: 50, vertical: 30),
+            padding: EdgeInsetsDirectional.symmetric(horizontal: 50, vertical: 30),
             decoration: BoxDecoration(
               color: Color(0XFF003366),
               borderRadius: BorderRadius.vertical(
@@ -106,8 +82,8 @@ class _ContractorRatingsScreenState extends State<ContractorRatingsScreen> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     SizedBox(height: 8),
-                    RatingBar.builder(
-                      initialRating: _rating,
+                    Obx(() => RatingBar.builder(
+                      initialRating: controller.rating.value,
                       minRating: 1,
                       direction: Axis.horizontal,
                       allowHalfRating: true, // السماح بتقييم نصف النجمة
@@ -118,11 +94,9 @@ class _ContractorRatingsScreenState extends State<ContractorRatingsScreen> {
                         color: Colors.white,
                       ),
                       onRatingUpdate: (rating) {
-                        setState(() {
-                          _rating = rating;
-                        });
+                        controller.updateRating(rating);
                       },
-                    ),
+                    )),
                     SizedBox(
                       width: 200,
                       child: Text(
@@ -140,11 +114,11 @@ class _ContractorRatingsScreenState extends State<ContractorRatingsScreen> {
           ),
           SizedBox(height: 40),
           Expanded(
-            child: ListView.builder(
+            child: Obx(() => ListView.builder(
               padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
-              itemCount: contractors.length,
+              itemCount: controller.contractors.length,
               itemBuilder: (context, index) {
-                final task = contractors[index];
+                final contractor = controller.contractors[index];
 
                 return Card(
                   color: Colors.white,
@@ -153,19 +127,19 @@ class _ContractorRatingsScreenState extends State<ContractorRatingsScreen> {
                     minTileHeight: 80,
                     leading: ClipOval(
                       child: Image.asset(
-                        task['image']!,
+                        contractor.image!,
                         width: 60,
                         height: 60,
                         fit: BoxFit.cover,
                       ),
                     ),
                     title: Text(
-                      task['title']!,
+                      contractor.title!,
                       style: GoogleFonts.poppins(
                           fontSize: 14, color: Colors.black),
                     ),
                     trailing: RatingBar.builder(
-                      initialRating: _rating,
+                      initialRating: contractor.rating!,
                       minRating: 1,
                       direction: Axis.horizontal,
                       allowHalfRating: true,
@@ -176,15 +150,13 @@ class _ContractorRatingsScreenState extends State<ContractorRatingsScreen> {
                         color: Color(0XFF003366),
                       ),
                       onRatingUpdate: (rating) {
-                        setState(() {
-                          _rating = rating;
-                        });
+                        controller.updateRating(rating);
                       },
                     ),
                   ),
                 );
               },
-            ),
+            )),
           ),
         ],
       ),

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:get/instance_manager.dart';
+import 'package:takatuf/controller/contractor/contractor_controller.dart';
 
-// نموذج لتسجيل المقاولين
 class ContractorAddScreen extends StatelessWidget {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController specialtyController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    final ContractorController contractorController = Get.put(ContractorController());
+
     return Scaffold(
       appBar: AppBar(title: Text("contractorRegistration".tr())),
       body: Padding(
@@ -15,17 +15,17 @@ class ContractorAddScreen extends StatelessWidget {
         child: Column(
           children: [
             TextField(
-              controller: nameController,
+              controller: contractorController.nameController,
               decoration: InputDecoration(labelText: "name".tr()),
             ),
             TextField(
-              controller: specialtyController,
+              controller: contractorController.specialtyController,
               decoration: InputDecoration(labelText: "specialty".tr()),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // من الممكن إضافة منطق تسجيل المقاولين هنا
+                contractorController.registerContractor();
               },
               child: Text("register".tr()),
             ),

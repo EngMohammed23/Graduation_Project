@@ -110,6 +110,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:takatuf/views/chat/chat_screen.dart';
 import 'chat_owner_screen.dart';
 
 class RequestsScreen extends StatelessWidget {
@@ -203,7 +204,7 @@ class RequestsScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatOwnerScreen(
+                                builder: (context) => ChatScreen(
                                   projectId: projectId,
                                   userId: userId,
                                 ),

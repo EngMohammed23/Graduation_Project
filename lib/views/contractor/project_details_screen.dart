@@ -2,14 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'chat_contractor_screen.dart';
+import '../chat/chat_screen.dart';
 
 class ProjectDetailsScreen extends StatefulWidget {
   final String projectId;
   final String userId;
   final String email;
 
-  const ProjectDetailsScreen({super.key, required this.projectId, required this.userId,required this.email});
+  const ProjectDetailsScreen({super.key, required this.projectId, required this.userId,required this.email, required project});
 
   @override
   State<ProjectDetailsScreen> createState() => _ProjectDetailsScreenState();
@@ -229,9 +229,9 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ChatContractorScreen(
+                            builder: (context) => ChatScreen(
                               projectId: widget.projectId,
-                              ownerId: widget.userId,
+                              userId: widget.userId,
                             ),
                           ),
                         );
@@ -260,7 +260,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
 // import 'package:flutter/material.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:easy_localization/easy_localization.dart';
-// import 'chat_contractor_screen.dart';
+// import 'chat_screen.dart';
 //
 // class ProjectDetailsScreen extends StatefulWidget {
 //   final String projectId;
