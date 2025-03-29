@@ -18,7 +18,7 @@ class ProjectsController extends GetxController {
   // دالة لجلب المشاريع من Firebase
   Future<void> _fetchProjects() async {
     try {
-      final snapshot = await FirebaseFirestore.instance.collection('projects').get();
+      final snapshot = await FirebaseFirestore.instance.collection('projects').where('userId', isEqualTo: userId.value).get();
       var projectList = snapshot.docs.map((doc) => ProjectModel.fromMap(doc)).toList();
       projects.value = projectList;
     } catch (e) {

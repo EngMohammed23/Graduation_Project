@@ -12,6 +12,7 @@
   "fullName": "Full Name",
   "confirmPassword": "Confirm Password",
   "userType": "User Type",
+  "noData": "No data to display",
   "pleaseFillFields": "Please fill in all fields!",
   "passwordWeak": "Password must be at least 6 characters long!",
   "passwordMismatch": "Passwords do not match!",

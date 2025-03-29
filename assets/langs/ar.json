@@ -106,6 +106,7 @@
   "descriptionHint": "أدخل وصف المشروع...",
   "enterProjectDescription": "يرجى إدخال وصف المشروع",
   "expectedBudget": "الميزانية المتوقعة",
+  "noData": "لا توجد بيانات لعرضها",
   "expectedDeliveryTime": "مدة التسليم المتوقعة (بالأيام)",
   "enterExpectedDeliveryTime": "يرجى إدخال مدة التسليم المتوقعة",
   "publishNow": "نشر الآن",

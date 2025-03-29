@@ -65,7 +65,7 @@ class _ProjectsOwnerState extends State<ProjectsOwner> {
                     const SizedBox(height: 20),
                     Expanded(
                       child: StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance.collection('projects').snapshots(),
+                        stream: FirebaseFirestore.instance.collection('projects').where('userId', isEqualTo: userId).snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return Center(child: Text('errorFetchingData'.tr()));

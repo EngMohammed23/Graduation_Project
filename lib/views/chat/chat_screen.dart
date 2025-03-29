@@ -1,47 +1,86 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart'; // تأكد من استيراد easy_localization
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/instance_manager.dart';
-import '../../controller/chat_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:intl/intl.dart';
 
-
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   final String projectId;
-  final String userId;
+  final String userId; // معرف المقاول الذي قدم الطلب
 
   const ChatScreen({required this.projectId, required this.userId});
 
   @override
+  _ChatScreenState createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  final TextEditingController _messageController = TextEditingController();
+  String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+
+  void sendMessage() {
+    if (_messageController.text.trim().isEmpty || currentUserId == null) return;
+
+    FirebaseFirestore.instance.collection('chats').add({
+      'projectId': widget.projectId,
+      'senderId': currentUserId,
+      'receiverId': widget.userId,
+      'message': _messageController.text.trim(),
+      'timestamp': FieldValue.serverTimestamp(),
+    }).catchError((error) {
+      print("خطأ أثناء إرسال الرسالة: $error");
+    });
+
+    _messageController.clear();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final chatController = Get.put(ChatController());
+    if (currentUserId == null) {
+      return Scaffold(
+        appBar: AppBar(title: Text('chat'.tr())),
+        body: Center(child: Text('pleaseLoginToChat'.tr())),
+      );
+    }
 
     return Scaffold(
-      appBar: AppBar(title: Text('chat'.tr())), // استخدم .tr() من easy_localization
+      appBar: AppBar(title: Text('chat'.tr())),
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder<List<QueryDocumentSnapshot>>(
-              stream: chatController.getMessages(projectId),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('chats')
+                  .where('projectId', isEqualTo: widget.projectId)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasError) {
-                  return Center(child: Text('errorLoadingMessages'.tr(args: [snapshot.error.toString()])));
+                  return Center(
+                      child: Text(
+                        'errorLoadingMessages'.tr(args: [snapshot.error.toString()]),
+                      ));
                 }
 
-                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                   return Center(
                     child: Text(
-                      'noMessagesYet'.tr(), // استخدم .tr() من easy_localization
+                      'noMessagesYet'.tr(),
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                   );
                 }
 
-                var messages = snapshot.data!;
+                var messages = snapshot.data!.docs;
+
+                messages.sort((a, b) {
+                  var timeA = (a['timestamp'] as Timestamp?)?.toDate() ?? DateTime(2000);
+                  var timeB = (b['timestamp'] as Timestamp?)?.toDate() ?? DateTime(2000);
+                  return timeB.compareTo(timeA);
+                });
 
                 return ListView.builder(
                   reverse: true, // ترتيب الرسائل من الأحدث إلى الأقدم
@@ -49,7 +88,11 @@ class ChatScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     var message = messages[index].data() as Map<String, dynamic>;
 
-                    bool isMe = message['senderId'] == chatController.currentUserId;
+                    if (!message.containsKey('senderId') || !message.containsKey('message')) {
+                      return SizedBox();
+                    }
+
+                    bool isMe = message['senderId'] == currentUserId;
                     Timestamp? timestamp = message['timestamp'] as Timestamp?;
                     String time = timestamp != null
                         ? DateFormat('hh:mm a').format(timestamp.toDate())
@@ -97,9 +140,9 @@ class ChatScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextField(
-                    controller: chatController.messageController,
+                    controller: _messageController,
                     decoration: InputDecoration(
-                      hintText: 'writeMessage'.tr(), // استخدم .tr() من easy_localization
+                      hintText: 'writeMessage'.tr(),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -108,7 +151,7 @@ class ChatScreen extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(Icons.send, color: Colors.blue),
-                  onPressed: () => chatController.sendMessage(projectId, userId),
+                  onPressed: sendMessage,
                 ),
               ],
             ),
@@ -118,3 +161,247 @@ class ChatScreen extends StatelessWidget {
     );
   }
 }
+
+
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/material.dart';
+// import 'package:easy_localization/easy_localization.dart'; // تأكد من استيراد easy_localization
+// import 'package:get/get_core/src/get_main.dart';
+// import 'package:get/instance_manager.dart';
+// import 'package:intl/intl.dart'; // لتنسيق الوقت
+// import '../../controller/chat_controller.dart';
+//
+// class ChatScreen extends StatelessWidget {
+//   final String projectId;
+//   final String userId;
+//
+//   const ChatScreen({required this.projectId, required this.userId});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final chatController = Get.put(ChatController());
+//
+//     return Scaffold(
+//       appBar: AppBar(title: Text('chat'.tr())), // استخدم .tr() من easy_localization
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: StreamBuilder<List<QueryDocumentSnapshot>>(
+//               stream: chatController.getMessages(projectId),
+//               builder: (context, snapshot) {
+//                 if (snapshot.connectionState == ConnectionState.waiting) {
+//                   return Center(child: CircularProgressIndicator());
+//                 }
+//
+//                 if (snapshot.hasError) {
+//                   return Center(child: Text('errorLoadingMessages'.tr(args: [snapshot.error.toString()])));
+//                 }
+//
+//                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
+//                   return Center(
+//                     child: Text(
+//                       'noMessagesYet'.tr(), // استخدم .tr() من easy_localization
+//                       style: TextStyle(fontSize: 16, color: Colors.grey),
+//                     ),
+//                   );
+//                 }
+//
+//                 var messages = snapshot.data!;
+//
+//                 return ListView.builder(
+//                   reverse: true, // ترتيب الرسائل من الأحدث إلى الأقدم
+//                   itemCount: messages.length,
+//                   itemBuilder: (context, index) {
+//                     var message = messages[index].data() as Map<String, dynamic>;
+//
+//                     bool isMe = message['senderId'] == chatController.currentUserId;
+//                     Timestamp? timestamp = message['timestamp'] as Timestamp?;
+//                     String time = timestamp != null
+//                         ? DateFormat('hh:mm a').format(timestamp.toDate())
+//                         : '...';
+//
+//                     return Align(
+//                       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+//                       child: Container(
+//                         margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+//                         padding: EdgeInsets.all(10),
+//                         decoration: BoxDecoration(
+//                           color: isMe ? Colors.blue : Colors.grey[300],
+//                           borderRadius: BorderRadius.circular(10),
+//                         ),
+//                         child: Column(
+//                           crossAxisAlignment:
+//                           isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+//                           children: [
+//                             Text(
+//                               message['message'],
+//                               style: TextStyle(
+//                                 color: isMe ? Colors.white : Colors.black,
+//                               ),
+//                             ),
+//                             SizedBox(height: 5),
+//                             Text(
+//                               time,
+//                               style: TextStyle(
+//                                 fontSize: 12,
+//                                 color: isMe ? Colors.white70 : Colors.black54,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     );
+//                   },
+//                 );
+//               },
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     controller: chatController.messageController,
+//                     decoration: InputDecoration(
+//                       hintText: 'writeMessage'.tr(), // استخدم .tr() من easy_localization
+//                       border: OutlineInputBorder(
+//                         borderRadius: BorderRadius.circular(20),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.send, color: Colors.blue),
+//                   onPressed: () => chatController.sendMessage(projectId, userId),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+//
+//
+// // import 'package:cloud_firestore/cloud_firestore.dart';
+// // import 'package:flutter/material.dart';
+// // import 'package:easy_localization/easy_localization.dart'; // تأكد من استيراد easy_localization
+// // import 'package:get/get_core/src/get_main.dart';
+// // import 'package:get/instance_manager.dart';
+// // import '../../controller/chat_controller.dart';
+// //
+// //
+// // class ChatScreen extends StatelessWidget {
+// //   final String projectId;
+// //   final String userId;
+// //
+// //   const ChatScreen({required this.projectId, required this.userId});
+// //
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     final chatController = Get.put(ChatController());
+// //
+// //     return Scaffold(
+// //       appBar: AppBar(title: Text('chat'.tr())), // استخدم .tr() من easy_localization
+// //       body: Column(
+// //         children: [
+// //           Expanded(
+// //             child: StreamBuilder<List<QueryDocumentSnapshot>>(
+// //               stream: chatController.getMessages(projectId),
+// //               builder: (context, snapshot) {
+// //                 if (snapshot.connectionState == ConnectionState.waiting) {
+// //                   return Center(child: CircularProgressIndicator());
+// //                 }
+// //
+// //                 if (snapshot.hasError) {
+// //                   return Center(child: Text('errorLoadingMessages'.tr(args: [snapshot.error.toString()])));
+// //                 }
+// //
+// //                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
+// //                   return Center(
+// //                     child: Text(
+// //                       'noMessagesYet'.tr(), // استخدم .tr() من easy_localization
+// //                       style: TextStyle(fontSize: 16, color: Colors.grey),
+// //                     ),
+// //                   );
+// //                 }
+// //
+// //                 var messages = snapshot.data!;
+// //
+// //                 return ListView.builder(
+// //                   reverse: true, // ترتيب الرسائل من الأحدث إلى الأقدم
+// //                   itemCount: messages.length,
+// //                   itemBuilder: (context, index) {
+// //                     var message = messages[index].data() as Map<String, dynamic>;
+// //
+// //                     bool isMe = message['senderId'] == chatController.currentUserId;
+// //                     Timestamp? timestamp = message['timestamp'] as Timestamp?;
+// //                     String time = timestamp != null
+// //                         ? DateFormat('hh:mm a').format(timestamp.toDate())
+// //                         : '...';
+// //
+// //                     return Align(
+// //                       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+// //                       child: Container(
+// //                         margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+// //                         padding: EdgeInsets.all(10),
+// //                         decoration: BoxDecoration(
+// //                           color: isMe ? Colors.blue : Colors.grey[300],
+// //                           borderRadius: BorderRadius.circular(10),
+// //                         ),
+// //                         child: Column(
+// //                           crossAxisAlignment:
+// //                           isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+// //                           children: [
+// //                             Text(
+// //                               message['message'],
+// //                               style: TextStyle(
+// //                                 color: isMe ? Colors.white : Colors.black,
+// //                               ),
+// //                             ),
+// //                             SizedBox(height: 5),
+// //                             Text(
+// //                               time,
+// //                               style: TextStyle(
+// //                                 fontSize: 12,
+// //                                 color: isMe ? Colors.white70 : Colors.black54,
+// //                               ),
+// //                             ),
+// //                           ],
+// //                         ),
+// //                       ),
+// //                     );
+// //                   },
+// //                 );
+// //               },
+// //             ),
+// //           ),
+// //           Padding(
+// //             padding: const EdgeInsets.all(8.0),
+// //             child: Row(
+// //               children: [
+// //                 Expanded(
+// //                   child: TextField(
+// //                     controller: chatController.messageController,
+// //                     decoration: InputDecoration(
+// //                       hintText: 'writeMessage'.tr(), // استخدم .tr() من easy_localization
+// //                       border: OutlineInputBorder(
+// //                         borderRadius: BorderRadius.circular(20),
+// //                       ),
+// //                     ),
+// //                   ),
+// //                 ),
+// //                 IconButton(
+// //                   icon: Icon(Icons.send, color: Colors.blue),
+// //                   onPressed: () => chatController.sendMessage(projectId, userId),
+// //                 ),
+// //               ],
+// //             ),
+// //           ),
+// //         ],
+// //       ),
+// //     );
+// //   }
+// // }

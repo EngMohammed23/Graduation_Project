@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -72,7 +73,6 @@ class _CreateNewProjectScreenState extends State<CreateNewProjectScreen> {
       return null;
     }
   }
-
   Future<void> _publishProject() async {
     try {
       String? imageUrl;
@@ -85,6 +85,15 @@ class _CreateNewProjectScreenState extends State<CreateNewProjectScreen> {
         fileUrl = await _uploadFile(_selectedFile!, 'project_files');
       }
 
+      // الحصول على الـ userId من Firebase Authentication
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        // في حال لم يكن هناك مستخدم مسجل دخوله
+        return;
+      }
+      String userId = user.uid;  // userId الحالي
+
+      // إضافة المشروع إلى Firestore
       await FirebaseFirestore.instance.collection('projects').add({
         'title': titleProject,
         'description': _projectDescription,
@@ -93,6 +102,7 @@ class _CreateNewProjectScreenState extends State<CreateNewProjectScreen> {
         'imageUrl': imageUrl ?? _selectedImageWeb,
         'fileUrl': fileUrl,
         'timestamp': FieldValue.serverTimestamp(),
+        'userId': userId,  // إضافة الـ userId هنا
       });
 
       // مسح الحقول بعد النجاح
@@ -116,6 +126,50 @@ class _CreateNewProjectScreenState extends State<CreateNewProjectScreen> {
       );
     }
   }
+
+  // Future<void> _publishProject() async {
+  //   try {
+  //     String? imageUrl;
+  //     String? fileUrl;
+  //
+  //     if (_selectedImage != null) {
+  //       imageUrl = await _uploadFile(_selectedImage!, 'project_images');
+  //     }
+  //     if (_selectedFile != null) {
+  //       fileUrl = await _uploadFile(_selectedFile!, 'project_files');
+  //     }
+  //
+  //     await FirebaseFirestore.instance.collection('projects').add({
+  //       'title': titleProject,
+  //       'description': _projectDescription,
+  //       'duration': _projectDuration,
+  //       'expectedDelivery': _projectExpectedDeliveryTime,
+  //       'imageUrl': imageUrl ?? _selectedImageWeb,
+  //       'fileUrl': fileUrl,
+  //       'timestamp': FieldValue.serverTimestamp(),
+  //     });
+  //
+  //     // مسح الحقول بعد النجاح
+  //     clearFields();
+  //
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text('projectPublished'.tr()),
+  //         backgroundColor: Colors.green,
+  //         duration: Duration(seconds: 2),
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     print('Error publishing project: $e');
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text('projectPublishFailed'.tr()),
+  //         backgroundColor: Colors.red,
+  //         duration: Duration(seconds: 2),
+  //       ),
+  //     );
+  //   }
+  // }
 
   void clearFields() {
     setState(() {

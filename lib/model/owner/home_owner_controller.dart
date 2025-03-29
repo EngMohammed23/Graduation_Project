@@ -11,7 +11,6 @@ class HomeOwnerController extends GetxController {
   void onInit() {
     super.onInit();
     _fetchUserId();
-    _fetchProjects();
   }
 
   // جلب الـ userId من Firebase
@@ -19,15 +18,21 @@ class HomeOwnerController extends GetxController {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       userId.value = user.uid;
+      await _fetchProjects(); // تنفيذ جلب المشاريع بعد تعيين الـ userId
     }
   }
 
   // جلب المشاريع من Firestore
   Future<void> _fetchProjects() async {
+    if (userId.value == null) return; // التأكد من أن الـ userId تم تعيينه
+
     try {
-      final snapshot = await FirebaseFirestore.instance.collection('projects').get();
+      final snapshot = await FirebaseFirestore.instance
+          .collection('projects')
+          .where('userId', isEqualTo: userId.value) // استخدام userId.value
+          .get();
       projects.assignAll(
-        snapshot.docs.map((doc) => ProjectModel.fromMap(doc)).toList(),
+        snapshot.docs.map((doc) => ProjectModel.fromMap(doc.data() as DocumentSnapshot<Object?>)).toList(),
       );
     } catch (e) {
       print("Error fetching projects: $e");
